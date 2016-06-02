@@ -1,2 +1,3 @@
-# blackjack
+# BlackJack
+
 BlackJack REST service
