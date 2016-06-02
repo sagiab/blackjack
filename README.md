@@ -8,7 +8,7 @@
 - ##### Table:
 
 #### Urls:
-- ##### Account
+- ##### Account:
 
     ```json
     
@@ -58,7 +58,7 @@
        
     ```
 
-- ##### Table
+- ##### Table:
 
     ```json
         URL: /account/{login}/select-table
@@ -120,41 +120,41 @@
        
     ```
 
-    - ##### Commands
+    - Commands:
 
-    ```json
-
-        URL: /account/{login}/table/{tableID}
-        TYPE: POST
-        BODY: Command in JSON format. See command types
-        EFFECT: Sends command to server
-        RESPONSE:  JSON
-            
-       
-    ```
+        ```json
     
-    - ##### Command types
-
-    ```json 
-        HIT:
-            {
-                "command": "HIT"
-            }
-        
-        BET:
-            {
-                "command": "BET",
-                "amount": 25
-            }
-        
-        STAND:
-            {
-                "command": "STAND"
-            }
-        
-        EXIT:
-            {
-                "command": "EXIT"
-            }
-    ```
+            URL: /account/{login}/table/{tableID}
+            TYPE: POST
+            BODY: Command in JSON format. See command types
+            EFFECT: Sends command to server
+            RESPONSE:  JSON
+                
+           
+        ```
+    
+        - Command types:
+    
+            ```json 
+                HIT:
+                    {
+                        "command": "HIT"
+                    }
+                
+                BET:
+                    {
+                        "command": "BET",
+                        "amount": 25
+                    }
+                
+                STAND:
+                    {
+                        "command": "STAND"
+                    }
+                
+                EXIT:
+                    {
+                        "command": "EXIT"
+                    }
+            ```
 
