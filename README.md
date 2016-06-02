@@ -8,6 +8,8 @@
 - ##### Table:
 
 #### Urls:
+- Account
+
     ```json
     
         URL: /account
@@ -56,12 +58,13 @@
        
     ```
 
-    ```json
+- Table
 
+    ```json
         URL: /account/{login}/select-table
         TYPE: GET
         BODY: NONE
-        EFFECT: Sends the available tables types
+        EFFECT: Gets the available tables types
         RESPONSE:  JSON
             {
                 "tabletypes": [
@@ -99,16 +102,16 @@
         URL: /account/{login}/table/{tableID}
         TYPE: GET
         BODY: NONE
-        EFFECT: Sends available commands for this state of game or error massage if the game not started
+        EFFECT: Gets available commands for this state of game or error message if the game not started.
         RESPONSE:  JSON
             {
                 "comands": [
                     {
-                        "name": HIT,
+                        "name": "HIT",
                         "available": false 
                     },
                     {
-                        "name": BET,
+                        "name": "BET",
                         "available": true 
                     }
                     ...
@@ -116,3 +119,42 @@
             }
        
     ```
+
+- Commands
+
+    ```json
+
+        URL: /account/{login}/table/{tableID}
+        TYPE: POST
+        BODY: Command in JSON format. See command types
+        EFFECT: Sends command to server
+        RESPONSE:  JSON
+            
+       
+    ```
+    
+- Command types
+
+    ```json 
+        HIT:
+            {
+                "command": "HIT"
+            }
+        
+        BET:
+            {
+                "command": "BET",
+                "amount": 25
+            }
+        
+        STAND:
+            {
+                "command": "STAND"
+            }
+        
+        EXIT:
+            {
+                "command": "EXIT"
+            }
+    ```
+
