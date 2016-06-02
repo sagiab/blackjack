@@ -8,7 +8,7 @@
 - ##### Table:
 
 #### Urls:
-- Account
+- ##### Account
 
     ```json
     
@@ -58,7 +58,7 @@
        
     ```
 
-- Table
+- ##### Table
 
     ```json
         URL: /account/{login}/select-table
@@ -120,7 +120,7 @@
        
     ```
 
-    - Commands
+    - ##### Commands
 
     ```json
 
@@ -133,7 +133,7 @@
        
     ```
     
-    - Command types
+    - ##### Command types
 
     ```json 
         HIT:
