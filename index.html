@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Blackjack : BlackJack REST service">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Blackjack</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/denisko21/blackjack">View on GitHub</a>
+
+          <h1 id="project_title">Blackjack</h1>
+          <h2 id="project_tagline">BlackJack REST service</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/denisko21/blackjack/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/denisko21/blackjack/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="blackjack-rest-service" class="anchor" href="#blackjack-rest-service" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>BlackJack REST service</h1>
+
+<h3>
+<a id="blackjack-api" class="anchor" href="#blackjack-api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>BlackJack API:</h3>
+
+<h4>
+<a id="objects" class="anchor" href="#objects" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Objects:</h4>
+
+<ul>
+<li><h5>
+<a id="user" class="anchor" href="#user" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>User:</h5></li>
+<li><h5>
+<a id="table" class="anchor" href="#table" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Table:</h5></li>
+</ul>
+
+<h4>
+<a id="urls" class="anchor" href="#urls" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Urls:</h4>
+
+<ul>
+<li>
+<h5>
+<a id="account" class="anchor" href="#account" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Account:</h5>
+
+<div class="highlight highlight-source-json"><pre>
+    URL: /account
+    TYPE: POST
+    BODY: JSON
+        {
+            <span class="pl-s"><span class="pl-pds">"</span>login<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>your_login<span class="pl-pds">"</span></span>,
+            <span class="pl-s"><span class="pl-pds">"</span>nickName<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>your_nickname<span class="pl-pds">"</span></span>,
+            <span class="pl-s"><span class="pl-pds">"</span>password<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>pass<span class="pl-pds">"</span></span>
+        }
+    EFFECT: Create new user with start balance $<span class="pl-c1">10</span>_<span class="pl-c1">000</span> in database
+    RESPONSE: JSON
+        {   
+            <span class="pl-s"><span class="pl-pds">"</span>status<span class="pl-pds">"</span></span>: <span class="pl-c1">0</span> <span class="pl-ii">or</span> <span class="pl-c1">-1</span>,     
+            <span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>status message<span class="pl-pds">"</span></span>
+        }
+</pre></div>
+
+<div class="highlight highlight-source-json"><pre>
+    URL: /account/{<span class="pl-ii">login</span>}
+    TYPE: GET
+    BODY: NONE
+    EFFECT: User info like login, nickname, balance
+    RESPONSE: JSON
+        {
+            <span class="pl-s"><span class="pl-pds">"</span>login<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>your_login<span class="pl-pds">"</span></span>,
+            <span class="pl-s"><span class="pl-pds">"</span>nickName<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>your_nickname<span class="pl-pds">"</span></span>,
+            <span class="pl-s"><span class="pl-pds">"</span>balance<span class="pl-pds">"</span></span>: <span class="pl-c1">10000</span>
+        }
+</pre></div>
+
+<div class="highlight highlight-source-json"><pre>
+    URL: /account/{<span class="pl-ii">login</span>}
+    TYPE: DELETE
+    BODY: NONE
+    EFFECT: Delete user from database
+    RESPONSE:  JSON
+        {
+            <span class="pl-s"><span class="pl-pds">"</span>status<span class="pl-pds">"</span></span>: <span class="pl-c1">0</span> <span class="pl-ii">or</span> <span class="pl-c1">-1</span>,     
+            <span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>status message<span class="pl-pds">"</span></span>
+        }
+</pre></div>
+</li>
+<li>
+<h5>
+<a id="table-1" class="anchor" href="#table-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Table:</h5>
+
+<div class="highlight highlight-source-json"><pre>    URL: /account/{<span class="pl-ii">login</span>}/select-table
+    TYPE: GET
+    BODY: NONE
+    EFFECT: Gets the available tables types
+    RESPONSE:  JSON
+        {
+            <span class="pl-s"><span class="pl-pds">"</span>tabletypes<span class="pl-pds">"</span></span>: [
+               {
+                   <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>: <span class="pl-c1">1</span>
+                   <span class="pl-s"><span class="pl-pds">"</span>minBet<span class="pl-pds">"</span></span><span class="pl-ii">:</span> <span class="pl-c1">1</span>,
+                   <span class="pl-s"><span class="pl-pds">"</span>maxBet<span class="pl-pds">"</span></span>: <span class="pl-c1">100</span>
+               },
+               <span class="pl-ii">...</span>
+               ]
+        }
+</pre></div>
+
+<div class="highlight highlight-source-json"><pre>
+    URL: /account/{<span class="pl-ii">login</span>}/table
+    TYPE: POST
+    BODY: 
+        {
+            <span class="pl-s"><span class="pl-pds">"</span>tabletype<span class="pl-pds">"</span></span>: <span class="pl-c1">1</span>
+        }
+    EFFECT: Create new table by tabletype for user by login
+    RESPONSE:  JSON
+        {
+            <span class="pl-s"><span class="pl-pds">"</span>status<span class="pl-pds">"</span></span>: <span class="pl-c1">0</span> <span class="pl-ii">or</span> <span class="pl-c1">-1</span>,     
+            <span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>status message<span class="pl-pds">"</span></span>,
+            <span class="pl-s"><span class="pl-pds">"</span>tableID<span class="pl-pds">"</span></span>: <span class="pl-c1">4623</span>
+        }
+</pre></div>
+
+<div class="highlight highlight-source-json"><pre>
+    URL: /account/{<span class="pl-ii">login</span>}/table/{<span class="pl-ii">tableID</span>}
+    TYPE: GET
+    BODY: NONE
+    EFFECT: Gets available commands for this state of game or error message if the game not started.
+    RESPONSE:  JSON
+        {
+            <span class="pl-s"><span class="pl-pds">"</span>comands<span class="pl-pds">"</span></span>: [
+                {
+                    <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>HIT<span class="pl-pds">"</span></span>,
+                    <span class="pl-s"><span class="pl-pds">"</span>available<span class="pl-pds">"</span></span>: <span class="pl-c1">false</span> 
+                },
+                {
+                    <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>BET<span class="pl-pds">"</span></span>,
+                    <span class="pl-s"><span class="pl-pds">"</span>available<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span> 
+                }
+                <span class="pl-ii">...</span>
+            ]                
+        }
+</pre></div>
+
+<ul>
+<li>
+<p>Commands:</p>
+
+<div class="highlight highlight-source-json"><pre>
+    URL: /account/{<span class="pl-ii">login</span>}/table/{<span class="pl-ii">tableID</span>}
+    TYPE: POST
+    BODY: Command in JSON format. See command types
+    EFFECT: Sends command to server
+    RESPONSE:  JSON
+
+</pre></div>
+
+<ul>
+<li>
+<p>Command types:</p>
+
+<div class="highlight highlight-source-json"><pre>    HIT:
+        {
+            <span class="pl-s"><span class="pl-pds">"</span>command<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>HIT<span class="pl-pds">"</span></span>
+        }
+
+    BET:
+        {
+            <span class="pl-s"><span class="pl-pds">"</span>command<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>BET<span class="pl-pds">"</span></span>,
+            <span class="pl-s"><span class="pl-pds">"</span>amount<span class="pl-pds">"</span></span>: <span class="pl-c1">25</span>
+        }
+
+    STAND:
+        {
+            <span class="pl-s"><span class="pl-pds">"</span>command<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>STAND<span class="pl-pds">"</span></span>
+        }
+
+    EXIT:
+        {
+            <span class="pl-s"><span class="pl-pds">"</span>command<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>EXIT<span class="pl-pds">"</span></span>
+        }</pre></div>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Blackjack maintained by <a href="https://github.com/denisko21">denisko21</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
