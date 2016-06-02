@@ -8,38 +8,111 @@
 - ##### Table:
 
 - ##### Urls:
-    - URL: /account
-      Type: PUT
-      BODY: JSON
-      ```
-      {"nickName": "your_nickname",
-       "login": "your_login",
-       "password": "pass"}
-      ```
-      Effect: Create new user with start balance $10_000 in database
-      RESPONSE: JSON
-      ```
-       {"status": 0,     
-       "message": "status message"}
-      ```
+    ```json
+    
+        URL: /account
+        TYPE: POST
+        BODY: JSON
+            {
+                "login": "your_login",
+                "nickName": "your_nickname",
+                "password": "pass"
+            }
+        EFFECT: Create new user with start balance $10_000 in database
+        RESPONSE: JSON
+            {   
+                "status": 0 or -1,     
+                "message": "status message"
+            }
+            
+    ```
 
-    - URL: /account/{nickName}
-      Type: GET
-      BODY: NONE
-      Effect: User info like login, nickname, balance
-      RESPONSE: JSON
-      ```
-      {"nickName": "your_nickname",
-       "login": "your_login",
-       "balance": 10000}
-      ```
+    ```json
 
-    - URL: /account/{nickName}
-      Type: DELETE
-      BODY: NONE
-      Effect: Delete user from database
-      RESPONSE:  JSON
-      ```json
-       {"status": 0,     
-       "message": "status message"}
-      ```
+        URL: /account/{login}
+        TYPE: GET
+        BODY: NONE
+        EFFECT: User info like login, nickname, balance
+        RESPONSE: JSON
+            {
+                "login": "your_login",
+                "nickName": "your_nickname",
+                "balance": 10000
+            }
+            
+    ```
+
+    ```json
+
+        URL: /account/{login}
+        TYPE: DELETE
+        BODY: NONE
+        EFFECT: Delete user from database
+        RESPONSE:  JSON
+            {
+                "status": 0 or -1,     
+                "message": "status message"
+            }
+       
+    ```
+
+    ```json
+
+        URL: /account/{login}/select-table
+        TYPE: GET
+        BODY: NONE
+        EFFECT: Sends the available tables types
+        RESPONSE:  JSON
+            {
+                "tabletypes": [
+                   {
+                       "id": 1
+                       "minBet": 1,
+                       "maxBet": 100
+                   },
+                   ...
+                   ]
+            }
+       
+    ```
+
+    ```json
+
+        URL: /account/{login}/table
+        TYPE: POST
+        BODY: 
+            {
+                "tabletype": 1
+            }
+        EFFECT: Create new table by tabletype for user by login
+        RESPONSE:  JSON
+            {
+                "status": 0 or -1,     
+                "message": "status message",
+                "tableID": 4623
+            }
+       
+    ```
+
+    ```json
+
+        URL: /account/{login}/table/{tableID}
+        TYPE: GET
+        BODY: NONE
+        EFFECT: Sends available commands for this state of game or error massage if the game not started
+        RESPONSE:  JSON
+            {
+                "comands": [
+                    {
+                        "name": HIT,
+                        "available": false 
+                    },
+                    {
+                        "name": BET,
+                        "available": true 
+                    }
+                    ...
+                ]                
+            }
+       
+    ```
