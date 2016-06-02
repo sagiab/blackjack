@@ -120,7 +120,7 @@
        
     ```
 
-- Commands
+    - Commands
 
     ```json
 
@@ -133,7 +133,7 @@
        
     ```
     
-- Command types
+    - Command types
 
     ```json 
         HIT:
