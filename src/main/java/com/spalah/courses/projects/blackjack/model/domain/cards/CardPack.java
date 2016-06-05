@@ -39,7 +39,7 @@ public class CardPack {
         throw new AllCardsWereUsedException();
     }
 
-    class AllCardsWereUsedException extends Exception{
+    public class AllCardsWereUsedException extends Exception{
         public AllCardsWereUsedException(){
             super("All cards were already used");
         }
