@@ -12,5 +12,13 @@
 
     <context:component-scan base-package="com.spalah.courses.projects.blackjack"/>
 
-    <mvc:annotation-driven />
+    <bean id="accountDao" class="com.spalah.courses.projects.blackjack.model.dao.impl.AccountDaoImpl">
+        <constructor-arg ref="entityManagerFactory" />
+    </bean>
+
+    <bean id="entityManagerFactory" factory-method="getEntityManagerFactory" class="com.spalah.courses.projects.blackjack.Main">
+        <constructor-arg value="com.spalah.courses.projects.blackjack"/>
+    </bean>
+
+    <!--<mvc:annotation-driven />-->
 </beans>
