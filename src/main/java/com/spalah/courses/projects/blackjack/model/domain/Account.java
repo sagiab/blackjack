@@ -4,6 +4,7 @@ package com.spalah.courses.projects.blackjack.model.domain;
  * @author Denis Loshkarev on 03.06.2016.
  */
 public class Account {
+<<<<<<< HEAD
     private Long id;
     private String login;
     private String nickName;
@@ -43,4 +44,6 @@ public class Account {
     public void setBalance(Long balance) {
         this.balance = balance;
     }
+=======
+>>>>>>> CyxouD
 }
