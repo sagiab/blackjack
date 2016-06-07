@@ -1,5 +1,8 @@
 package com.spalah.courses.projects.blackjack.model.domain.cards;
 
+
+import com.spalah.courses.projects.blackjack.exception.AllCardsWereUsedException;
+
 import java.util.*;
 
 /**
@@ -39,11 +42,6 @@ public class CardPack {
         throw new AllCardsWereUsedException();
     }
 
-    public class AllCardsWereUsedException extends Exception{
-        public AllCardsWereUsedException(){
-            super("All cards were already used");
-        }
-    }
 
     public static void main(String[] args) {
         CardPack cardPack = new CardPack();
@@ -59,9 +57,4 @@ public class CardPack {
         }
         System.out.println(usedCards.size());
     }
-
-
-
-
-
 }
