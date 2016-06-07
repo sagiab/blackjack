@@ -1,4 +1,6 @@
-package com.spalah.courses.projects.blackjack.model.domain;
+package com.spalah.courses.projects.blackjack.model.domain.account;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
 
@@ -18,6 +20,8 @@ public class Account {
     private String nickName;
     @Column(name = "balance")
     private Long balance;
+    @Column(name = "password")
+    private String password;
 
     public Account() {
     }
@@ -52,5 +56,24 @@ public class Account {
 
     public void setBalance(Long balance) {
         this.balance = balance;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", id)
+                .append("login", login)
+                .append("nickName", nickName)
+                .append("balance", balance)
+                .append("pass", password)
+                .toString();
     }
 }

@@ -4,7 +4,7 @@
              version="2.0">
     <persistence-unit name="com.spalah.courses.projects.blackjack">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <class>com.spalah.courses.projects.blackjack.model.domain.Account</class>
+        <class>com.spalah.courses.projects.blackjack.model.domain.account.Account</class>
         <properties>
             <property name="hibernate.show_sql" value="true"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/blackjack"/>

@@ -1,7 +1,6 @@
 package com.spalah.courses.projects.blackjack.model.dao;
 
-import com.spalah.courses.projects.blackjack.exception.DaoException;
-import com.spalah.courses.projects.blackjack.model.domain.Account;
+import com.spalah.courses.projects.blackjack.model.domain.account.Account;
 
 import java.util.List;
 

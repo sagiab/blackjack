@@ -3,11 +3,11 @@ package com.spalah.courses.projects.blackjack.exception;
 /**
  * @author Denis Loshkarev on 05.06.2016.
  */
-public class DaoException extends BlackJackException {
-    public DaoException() {
+public class AccountException extends BlackJackException {
+    public AccountException() {
     }
 
-    public DaoException(String message) {
+    public AccountException(String message) {
         super(message);
     }
 }

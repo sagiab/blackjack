@@ -1,12 +1,10 @@
 package com.spalah.courses.projects.blackjack.model.dao.impl;
 
-import com.spalah.courses.projects.blackjack.exception.DaoException;
 import com.spalah.courses.projects.blackjack.model.dao.AccountDao;
-import com.spalah.courses.projects.blackjack.model.domain.Account;
+import com.spalah.courses.projects.blackjack.model.domain.account.Account;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.List;

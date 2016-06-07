@@ -1,8 +1,8 @@
 package com.spalah.courses.projects.blackjack;
 
-import com.spalah.courses.projects.blackjack.exception.DaoException;
+import com.spalah.courses.projects.blackjack.exception.AccountException;
 import com.spalah.courses.projects.blackjack.model.dao.AccountDao;
-import com.spalah.courses.projects.blackjack.model.domain.Account;
+import com.spalah.courses.projects.blackjack.model.domain.account.Account;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -17,7 +17,7 @@ public class Main {
         return Persistence.createEntityManagerFactory(pUnit);
     }
 
-    public static void main(String[] args) throws DaoException {
+    public static void main(String[] args) throws AccountException {
         ApplicationContext context = new ClassPathXmlApplicationContext("WEB-INF/application-servlet.xml");
         AccountDao accountDao = context.getBean("accountDao", AccountDao.class);
         Account account = new Account();

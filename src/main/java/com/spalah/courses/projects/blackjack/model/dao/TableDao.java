@@ -1,8 +1,8 @@
 package com.spalah.courses.projects.blackjack.model.dao;
 
-import com.spalah.courses.projects.blackjack.model.domain.Account;
-import com.spalah.courses.projects.blackjack.model.domain.Table;
-import com.spalah.courses.projects.blackjack.model.domain.TableType;
+import com.spalah.courses.projects.blackjack.model.domain.account.Account;
+import com.spalah.courses.projects.blackjack.model.domain.table.Table;
+import com.spalah.courses.projects.blackjack.model.domain.table.TableType;
 import com.spalah.courses.projects.blackjack.model.domain.commands.Command;
 
 import java.util.List;
