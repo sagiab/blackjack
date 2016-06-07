@@ -63,15 +63,7 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public boolean isValid(Account account) throws DaoException {
-        List<Account> accounts = getAll();
-        for (Account a : accounts) {
-            if (a.getLogin().equals(account.getLogin())) throw new DaoException("This login is already busy.");
-        }
-        return true;
-    }
-
-    private List<Account> getAll() {
+    public List<Account> getAll() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         return entityManager.createQuery(GET_ALL_ACCOUNTS, Account.class).getResultList();
     }
