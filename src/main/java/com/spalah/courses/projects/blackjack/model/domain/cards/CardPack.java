@@ -42,6 +42,7 @@ public class CardPack {
         throw new AllCardsWereUsedException();
     }
 
+
     public static void main(String[] args) {
         CardPack cardPack = new CardPack();
         Set<Card> usedCards = new HashSet<>();
