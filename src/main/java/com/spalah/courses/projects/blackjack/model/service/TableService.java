@@ -1,10 +1,10 @@
 package com.spalah.courses.projects.blackjack.model.service;
 
 import com.spalah.courses.projects.blackjack.model.dao.TableDao;
-import com.spalah.courses.projects.blackjack.model.domain.Account;
-import com.spalah.courses.projects.blackjack.model.domain.Table;
-import com.spalah.courses.projects.blackjack.model.domain.TableType;
+import com.spalah.courses.projects.blackjack.model.domain.account.Account;
 import com.spalah.courses.projects.blackjack.model.domain.commands.Command;
+import com.spalah.courses.projects.blackjack.model.domain.table.Table;
+import com.spalah.courses.projects.blackjack.model.domain.table.TableType;
 
 import java.util.List;
 

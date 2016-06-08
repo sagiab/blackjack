@@ -5,6 +5,7 @@ import com.spalah.courses.projects.blackjack.model.dao.AccountDao;
 import com.spalah.courses.projects.blackjack.model.domain.account.Account;
 import org.mindrot.jbcrypt.BCrypt;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 /**
@@ -19,7 +20,12 @@ public class AccountService {
     }
 
     public Account getAccount(String login, String password) throws AccountException {
-        Account account = accountDao.getAccount(login);
+        Account account;
+        try {
+            account = accountDao.getAccount(login);
+        } catch (NoResultException e) {
+            throw new AccountException("Login incorrect");
+        }
         if (BCrypt.checkpw(password, account.getPassword())) return account;
         else throw new AccountException("Password incorrect");
     }

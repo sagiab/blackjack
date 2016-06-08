@@ -21,8 +21,7 @@ public class CardPack {
     private void initPack(){
         CardType[] cardTypes = CardType.values();
         CardColor[] cardColors = CardColor.values();
-        for (CardType cardType : cardTypes){
-            for (CardColor cardColor : cardColors){
+        for (CardType cardType : cardTypes){for (CardColor cardColor : cardColors){
                 cards.add(new Card(cardColor, cardType));
             }
         }
