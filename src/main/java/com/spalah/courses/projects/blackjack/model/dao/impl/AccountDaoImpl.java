@@ -39,13 +39,13 @@ public class AccountDaoImpl implements AccountDao {
         if (login != null) {
             ParameterExpression<String> p = cb.parameter(String.class, "login");
             cq.where(
-                    cb.like(c.get("login"), p)
+                    cb.equal(c.get("login"), p)
             );
         }
 
         TypedQuery<Account> q = entityManager.createQuery(cq);
         if (login != null) {
-            q.setParameter("login", "%" + login + "%");
+            q.setParameter("login", login);
         }
         return q.getSingleResult();
     }

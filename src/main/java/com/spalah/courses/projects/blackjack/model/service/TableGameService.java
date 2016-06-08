@@ -1,6 +1,7 @@
 package com.spalah.courses.projects.blackjack.model.service;
 
 import com.spalah.courses.projects.blackjack.model.dao.TableGameDao;
+import com.spalah.courses.projects.blackjack.model.domain.cards.Card;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  */
 public class TableGameService implements TableGameDao {
     @Override
-    public List getPlayerCards(String playerLogin) {
+    public List<Card> getPlayerCards(String playerLogin) {
         return null;
     }
 }
