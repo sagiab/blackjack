@@ -26,6 +26,5 @@ public class Main {
         account.setBalance(10_000L);
         accountDao.createAccount(account);
         accountDao.deleteAccount("Login");
-        System.out.println(accountDao.isValid(account));
     }
 }
