@@ -10,11 +10,11 @@ import java.util.*;
  * @author Dima Zasuha on 05.06.2016
  */
 public class CardPack {
-    private HashSet<Card> cards;
+    private List<Card> cards;
     private static final int NUMBER_OF_CARDS = 208; // 4 packs = 4 * 52 = 208 cards
 
     public CardPack(){
-        cards = new HashSet<>(NUMBER_OF_CARDS);
+        cards = new ArrayList<>(NUMBER_OF_CARDS);
         initPack();
     }
 

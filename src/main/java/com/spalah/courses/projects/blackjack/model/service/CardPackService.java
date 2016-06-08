@@ -1,7 +1,8 @@
 package com.spalah.courses.projects.blackjack.model.service;
 
+import com.spalah.courses.projects.blackjack.exception.AllCardsWereUsedException;
 import com.spalah.courses.projects.blackjack.model.dao.CardPackDao;
-import com.spalah.courses.projects.blackjack.model.domain.Account;
+import com.spalah.courses.projects.blackjack.model.domain.account.Account;
 import com.spalah.courses.projects.blackjack.model.domain.cards.Card;
 import com.spalah.courses.projects.blackjack.model.domain.cards.CardPack;
 
@@ -28,7 +29,7 @@ public class CardPackService implements CardPackDao{
             try {
                 Card card = cardPack.nextCard(usedCards);
                 //добавляем эту карту в базу
-            } catch (CardPack.AllCardsWereUsedException e) {
+            } catch (AllCardsWereUsedException e) {
                 e.printStackTrace();
             }
         }
