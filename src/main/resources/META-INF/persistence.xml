@@ -5,11 +5,16 @@
     <persistence-unit name="com.spalah.courses.projects.blackjack">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>com.spalah.courses.projects.blackjack.model.domain.account.Account</class>
+        <class>com.spalah.courses.projects.blackjack.model.domain.bet.Bet</class>
+        <class>com.spalah.courses.projects.blackjack.model.domain.table.Table</class>
+        <class>com.spalah.courses.projects.blackjack.model.domain.table.TableGame</class>
+        <class>com.spalah.courses.projects.blackjack.model.domain.table.TableType</class>
+
         <properties>
             <property name="hibernate.show_sql" value="true"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/blackjack"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/black_jack"/>
             <property name="javax.persistence.jdbc.user" value="root"/>
-            <property name="javax.persistence.jdbc.password" value=""/>
+            <property name="javax.persistence.jdbc.password" value="root"/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
         </properties>
     </persistence-unit>

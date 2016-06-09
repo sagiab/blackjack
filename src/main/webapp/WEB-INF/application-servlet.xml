@@ -15,8 +15,18 @@
     <bean id="accountService" class="com.spalah.courses.projects.blackjack.model.service.AccountService">
         <constructor-arg ref="accountDao"/>
     </bean>
+    <bean id="tableService" class="com.spalah.courses.projects.blackjack.model.service.TableService">
+        <constructor-arg ref="tableDao"/>
+        <constructor-arg ref="tableTypeDao"/>
+    </bean>
 
     <bean id="accountDao" class="com.spalah.courses.projects.blackjack.model.dao.impl.AccountDaoImpl">
+        <constructor-arg ref="entityManagerFactory" />
+    </bean>
+    <bean id="tableDao" class="com.spalah.courses.projects.blackjack.model.dao.impl.TableDaoImpl">
+        <constructor-arg ref="entityManagerFactory" />
+    </bean>
+    <bean id="tableTypeDao" class="com.spalah.courses.projects.blackjack.model.dao.impl.TableTypeDaoImpl">
         <constructor-arg ref="entityManagerFactory" />
     </bean>
 

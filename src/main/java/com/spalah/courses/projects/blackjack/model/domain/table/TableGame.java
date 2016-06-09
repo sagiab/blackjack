@@ -12,30 +12,30 @@ public class TableGame {
     @Id
     @Column(name = "step_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int stepId;
+    private long stepId;
 
     @Column(name = "bet_id")
-    private int betId;
+    private long betId;
 
     @Column(name = "cards")
     private String cards;
 
     @Column(name = "player_type")
-    private String playerType;
+    private PlayerType playerType;
 
-    public int getStepId() {
+    public long getStepId() {
         return stepId;
     }
 
-    public void setStepId(int stepId) {
+    public void setStepId(long stepId) {
         this.stepId = stepId;
     }
 
-    public int getBetId() {
+    public long getBetId() {
         return betId;
     }
 
-    public void setBetId(int betId) {
+    public void setBetId(long betId) {
         this.betId = betId;
     }
 
@@ -47,11 +47,11 @@ public class TableGame {
         this.cards = cards;
     }
 
-    public String getPlayerType() {
+    public PlayerType getPlayerType() {
         return playerType;
     }
 
-    public void setPlayerType(String playerType) {
+    public void setPlayerType(PlayerType playerType) {
         this.playerType = playerType;
     }
 

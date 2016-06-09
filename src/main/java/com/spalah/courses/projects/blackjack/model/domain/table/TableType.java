@@ -11,7 +11,7 @@ public class TableType {
     @Id
     @Column(name = "table_type_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "min_bet")
     private int minBetSize;
@@ -20,11 +20,11 @@ public class TableType {
     private int maxBetSize;
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

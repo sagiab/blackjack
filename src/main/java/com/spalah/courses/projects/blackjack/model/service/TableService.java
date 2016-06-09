@@ -1,30 +1,33 @@
 package com.spalah.courses.projects.blackjack.model.service;
 
 import com.spalah.courses.projects.blackjack.model.dao.TableDao;
-import com.spalah.courses.projects.blackjack.model.domain.account.Account;
-import com.spalah.courses.projects.blackjack.model.domain.commands.Command;
-import com.spalah.courses.projects.blackjack.model.domain.table.Table;
+import com.spalah.courses.projects.blackjack.model.dao.TableTypeDao;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableType;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.List;
 
 /**
  * @author Denis Loshkarev on 03.06.2016.
  */
-public class TableService implements TableDao{
+public class TableService{
+    private TableDao tableDao;
+    private TableTypeDao tableTypeDao;
 
-    @Override
+
+    public TableService(TableDao tableDao, TableTypeDao tableTypeDao){
+        this.tableDao = tableDao;
+    }
+
     public List<TableType> getTableTypesVariants() {
-        return null;
+        return tableTypeDao.getTableTypesVariants();
     }
 
-    @Override
-    public Table createTable(TableType tableType, Account account) {
-        return null;
+    public static void main(String[] args) {
+        ApplicationContext context = new ClassPathXmlApplicationContext("WEB-INF/application-servlet.xml");
+        TableDao tableDao = context.getBean("tableDao", TableDao.class);
     }
 
-    @Override
-    public List<Command> getAvailableCommands(Table table) {
-        return null;
-    }
+
 }
