@@ -7,7 +7,7 @@
         <class>com.spalah.courses.projects.blackjack.model.domain.account.Account</class>
         <properties>
             <property name="hibernate.show_sql" value="true"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/blackjack"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/black_jack"/>
             <property name="javax.persistence.jdbc.user" value="root"/>
             <property name="javax.persistence.jdbc.password" value=""/>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>

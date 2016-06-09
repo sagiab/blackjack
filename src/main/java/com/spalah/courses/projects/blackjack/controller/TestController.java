@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class TestController {
-    @Autowired
     TableService tableService;
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)

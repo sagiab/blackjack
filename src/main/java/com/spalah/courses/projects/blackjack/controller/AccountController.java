@@ -6,6 +6,7 @@ import com.spalah.courses.projects.blackjack.model.domain.account.FormCreateAcco
 import com.spalah.courses.projects.blackjack.model.domain.account.FormLoginAccount;
 import com.spalah.courses.projects.blackjack.model.domain.status.StatusMessage;
 import com.spalah.courses.projects.blackjack.model.service.AccountService;
+import org.apache.commons.lang3.text.StrBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -51,7 +53,12 @@ public class AccountController {
             accountService.createAccount(account);
             return new StatusMessage().well("Account is created");
         } else {
-            throw new AccountException(valid.toString());
+            StringBuilder sb = new StringBuilder();
+            for (ConstraintViolation<FormCreateAccount> errorElement : valid) {
+
+            }
+
+            throw new AccountException();
         }
     }
 
