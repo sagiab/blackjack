@@ -15,7 +15,6 @@ import java.util.List;
  */
 @Controller
 public class TestController {
-    @Autowired
     TableService tableService;
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
