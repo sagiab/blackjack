@@ -1,6 +1,9 @@
 package com.spalah.courses.projects.blackjack.model.domain.bet;
 
+import com.spalah.courses.projects.blackjack.model.domain.table.TableGame;
+
 import javax.persistence.*;
+import java.util.*;
 
 /**
  * Created by Dima on 08.06.2016.
@@ -13,11 +16,15 @@ public class Bet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long betId;
 
-    @Column(name = "table_id")
-    private long tableId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "table_id")
+    private com.spalah.courses.projects.blackjack.model.domain.table.Table table;
 
     @Column(name = "bet_size")
     private int betSize;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "bet")
+    private List<TableGame> steps;
 
     public long getBetId() {
         return betId;
@@ -27,12 +34,12 @@ public class Bet {
         this.betId = betId;
     }
 
-    public long getTableId() {
-        return tableId;
+    public com.spalah.courses.projects.blackjack.model.domain.table.Table getTable() {
+        return table;
     }
 
-    public void setTableId(long tableId) {
-        this.tableId = tableId;
+    public void setTable(com.spalah.courses.projects.blackjack.model.domain.table.Table table) {
+        this.table = table;
     }
 
     public int getBetSize() {

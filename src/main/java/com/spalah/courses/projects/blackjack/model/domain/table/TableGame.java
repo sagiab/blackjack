@@ -1,5 +1,7 @@
 package com.spalah.courses.projects.blackjack.model.domain.table;
 
+import com.spalah.courses.projects.blackjack.model.domain.bet.Bet;
+
 import javax.persistence.*;
 
 /**
@@ -14,8 +16,9 @@ public class TableGame {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long stepId;
 
-    @Column(name = "bet_id")
-    private long betId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bet_id")
+    private Bet bet;
 
     @Column(name = "cards")
     private String cards;
@@ -31,12 +34,12 @@ public class TableGame {
         this.stepId = stepId;
     }
 
-    public long getBetId() {
-        return betId;
+    public Bet getBet() {
+        return bet;
     }
 
-    public void setBetId(long betId) {
-        this.betId = betId;
+    public void setBet(Bet bet) {
+        this.bet = bet;
     }
 
     public String getCards() {
@@ -59,7 +62,7 @@ public class TableGame {
     public String toString() {
         return "TableGame{" +
                 "stepId=" + stepId +
-                ", betId=" + betId +
+                ", bet=" + bet +
                 ", cards='" + cards + '\'' +
                 ", playerType='" + playerType + '\'' +
                 '}';
