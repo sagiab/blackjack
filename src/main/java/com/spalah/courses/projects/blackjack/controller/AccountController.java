@@ -39,16 +39,20 @@ public class AccountController {
     public StatusMessage createAccount(@RequestBody FormCreateAccount formAccount) throws AccountException {
         Account account = new Account();
         Set<ConstraintViolation<FormCreateAccount>> valid = validator.validate(formAccount);
-        System.out.println(valid);
+        if (valid.size() == 0) {
+            System.out.println(valid);
 
-        account.setLogin(formAccount.getLogin());
-        account.setNickName(formAccount.getNickName());
-        account.setPassword(formAccount.getPassword());
+            account.setLogin(formAccount.getLogin());
+            account.setNickName(formAccount.getNickName());
+            account.setPassword(formAccount.getPassword());
 
-        System.out.println(account);
+            System.out.println(account);
 
-        accountService.createAccount(account);
-        return new StatusMessage().well("Account is created");
+            accountService.createAccount(account);
+            return new StatusMessage().well("Account is created");
+        } else {
+            throw new AccountException(valid.toString());
+        }
     }
 
     @RequestMapping(value = "/account/login", method = RequestMethod.POST)
