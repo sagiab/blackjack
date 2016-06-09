@@ -4,9 +4,12 @@ import com.spalah.courses.projects.blackjack.model.dao.TableDao;
 import com.spalah.courses.projects.blackjack.model.domain.account.Account;
 import com.spalah.courses.projects.blackjack.model.domain.commands.Command;
 import com.spalah.courses.projects.blackjack.model.domain.table.Table;
+import com.spalah.courses.projects.blackjack.model.domain.table.TableBetRange;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableType;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.util.List;
 
 /**
@@ -30,9 +33,19 @@ public class TableDaoImpl implements TableDao {
         return null;
     }
 
+    @Override
+    public TableBetRange getTableBetRange(long tableId) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        List<Table> table =  entityManager.createQuery("FROM Table", Table.class).getResultList();
+        System.out.println(table);
+        return null;
+    }
+
 
     public static void main(String[] args) {
-        //TableDaoImpl tableDao = new TableDaoImpl();
-       // System.out.println(tableDao.getTableTypesVariants());
+        String PERSISTENCE_UNIT = "com.spalah.courses.projects.blackjack";
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
+        TableDao tableDao = new TableDaoImpl(entityManagerFactory);
+        System.out.println(tableDao.getTableBetRange(1));
     }
 }

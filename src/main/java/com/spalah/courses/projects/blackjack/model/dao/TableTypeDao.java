@@ -1,6 +1,5 @@
 package com.spalah.courses.projects.blackjack.model.dao;
 
-import com.spalah.courses.projects.blackjack.model.domain.table.TableBetRange;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableType;
 
 import java.util.List;
@@ -10,6 +9,4 @@ import java.util.List;
  */
 public interface TableTypeDao {
     List<TableType> getTableTypesVariants();
-
-    TableBetRange getTableBetRange(long tableTypeId);
 }

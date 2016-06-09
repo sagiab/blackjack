@@ -6,7 +6,7 @@ import javax.persistence.*;
  * Created by Dima on 08.06.2016.
  */
 @Entity
-@javax.persistence.Table(name = "Bet-Player-bet")
+@javax.persistence.Table(name = "bet-player-communication")
 public class Bet {
     @Id
     @Column(name = "bet_id")

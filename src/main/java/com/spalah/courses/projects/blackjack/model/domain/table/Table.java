@@ -6,15 +6,14 @@ import javax.persistence.*;
  * Created by Dima on 08.06.2016.
  */
 @Entity
-@javax.persistence.Table(name = "Table-Player-bet")
+@javax.persistence.Table(name = "table-player-communication")
 public class Table {
     @Id
     @Column(name = "table_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long tableId;
 
-    @Column(name = "table_type_id")
-    private long tableTypeId;
+    private TableType tableType;
 
     @Column(name = "player_id")
     private int playerId;
@@ -27,12 +26,15 @@ public class Table {
         this.tableId = tableId;
     }
 
-    public long getTableTypeId() {
-        return tableTypeId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "table_type_id", nullable = false)
+    public TableType getTableTypeId() {
+        return tableType;
     }
 
-    public void setTableTypeId(long tableTypeId) {
-        this.tableTypeId = tableTypeId;
+    public void setTableTypeId(TableType tableType) {
+        this.tableType = tableType;
     }
 
     public int getPlayerId() {

@@ -1,12 +1,14 @@
 package com.spalah.courses.projects.blackjack.controller;
 
+import com.spalah.courses.projects.blackjack.model.domain.table.TableType;
 import com.spalah.courses.projects.blackjack.model.service.TableService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * Created by Denis Loshkarev.
@@ -18,7 +20,7 @@ public class TestController {
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
-    public void test() {
-//        tableService.getTableTypesVariants();
+    public List<TableType> test() {
+         return tableService.getTableTypesVariants();
     }
 }
