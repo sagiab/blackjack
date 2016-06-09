@@ -19,4 +19,15 @@ public class ExceptionController {
     public StatusMessage accountException(AccountException e) {
         return new StatusMessage().error(e);
     }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    public StatusMessage exception(Exception e) {
+        if (e.getMessage().contains("Unknown database")) {
+//            EntityManager manager = getEntityManager();
+//            Query q = manager.createNativeQuery("BEGIN " + sqlScript + " END;");
+//            q.executeUpdate();
+        }
+        return new StatusMessage().error(e);
+    }
 }
