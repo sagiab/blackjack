@@ -19,4 +19,12 @@ public class TableBetRange {
     public int getMinBet() {
         return minBet;
     }
+
+    @Override
+    public String toString() {
+        return "TableBetRange{" +
+                "maxBet=" + maxBet +
+                ", minBet=" + minBet +
+                '}';
+    }
 }
