@@ -25,7 +25,17 @@ public class TableDaoImpl implements TableDao {
 
     @Override
     public Table createTable(TableType tableType, Account account) {
-        return null;
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+
+        Table table = new Table();
+        table.setType(tableType);
+        table.setPlayer(account);
+
+        entityManager.persist(table);
+        entityManager.getTransaction().commit();
+
+        return table;
     }
 
     @Override
@@ -39,7 +49,7 @@ public class TableDaoImpl implements TableDao {
         Table table = entityManager.createQuery("FROM Table where tableId = :id", Table.class)
                 .setParameter("id", tableId)
                 .getSingleResult();
-        TableType tableType = table.getTableTypeId();
+        TableType tableType = table.getType();
         return new TableBetRange(tableType.getMinBetSize(), tableType.getMaxBetSize());
     }
 
@@ -48,6 +58,18 @@ public class TableDaoImpl implements TableDao {
         String PERSISTENCE_UNIT = "com.spalah.courses.projects.blackjack";
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
         TableDao tableDao = new TableDaoImpl(entityManagerFactory);
+        testCreateTable(tableDao);
+    }
+
+    public static void testTableBetRange(TableDao tableDao){
         System.out.println(tableDao.getTableBetRange(1));
+    }
+
+    public static void testCreateTable(TableDao tableDao){
+        TableType tableType = new TableType();
+        tableType.setId(1);
+        Account account = new Account();
+        account.setId(2L);
+        System.out.println(tableDao.createTable(tableType, account));
     }
 }
