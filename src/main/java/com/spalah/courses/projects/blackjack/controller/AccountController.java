@@ -19,7 +19,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -53,23 +55,22 @@ public class AccountController {
             accountService.createAccount(account);
             return new StatusMessage().well("Account is created");
         } else {
-            StringBuilder sb = new StringBuilder();
+            Map<String, String> errors = new HashMap<>();
             for (ConstraintViolation<FormCreateAccount> errorElement : valid) {
-
+                errors.put(errorElement.getPropertyPath().toString(), errorElement.getMessageTemplate());
             }
-
-            throw new AccountException();
+            throw new AccountException("Fields aren't valid", errors);
         }
     }
 
     @RequestMapping(value = "/account/login", method = RequestMethod.POST)
     @ResponseBody
     public StatusMessage createAccount(@RequestBody FormLoginAccount loginAccount) throws AccountException {
-            String login = loginAccount.getLogin();
-            String password = loginAccount.getPassword();
-            Account account = accountService.getAccount(login, password);
-            return new StatusMessage()
-                    .well("Account is present")
-                    .add(account);
+        String login = loginAccount.getLogin();
+        String password = loginAccount.getPassword();
+        Account account = accountService.getAccount(login, password);
+        return new StatusMessage()
+                .well("Account is present")
+                .add(account);
     }
 }

@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `table_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `table_type` (
-  `table_type_id` int(11) NOT NULL,
+  `table_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `min_bet` int(11) NOT NULL,
   `max_bet` int(11) NOT NULL,
   PRIMARY KEY (`table_type_id`)
@@ -50,10 +50,10 @@ DROP TABLE IF EXISTS `account`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `account` (
-  `player_id` int(11) NOT NULL,
+  `player_id` int(11) NOT NULL AUTO_INCREMENT,
   `login` varchar(25) NOT NULL,
   `nickname` varchar(15) NOT NULL,
-  `password` varchar(45) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `balance` int(11) NOT NULL,
   PRIMARY KEY (`player_id`),
   UNIQUE KEY `login_UNIQUE` (`login`)
@@ -63,10 +63,12 @@ CREATE TABLE `account` (
 --
 -- Dumping data for table `account`
 --
+-- Password: 12345
+--
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'Den@Den','Den','123',10000),(2,'Ned@Ned','Ned','321',10000);
+INSERT INTO `account` VALUES (1,'Den@Den','Den','$2a$10$fqXsfEVDctAI/39sk4BUFu3BUt9Lz1/dEg4ODBkPYbDrIyuGLKb5m',10000),(2,'Ned@Ned','Ned','$2a$10$fqXsfEVDctAI/39sk4BUFu3BUt9Lz1/dEg4ODBkPYbDrIyuGLKb5m',10000);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -78,7 +80,7 @@ DROP TABLE IF EXISTS `bet-player-communication`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `bet-player-communication` (
-  `bet_id` int(11) NOT NULL,
+  `bet_id` int(11) NOT NULL AUTO_INCREMENT,
   `table_id` int(11) NOT NULL,
   `bet_size` int(11) NOT NULL,
   PRIMARY KEY (`bet_id`),
@@ -105,7 +107,7 @@ DROP TABLE IF EXISTS `table-player-communication`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `table-player-communication` (
-  `table_id` int(11) NOT NULL,
+  `table_id` int(11) NOT NULL AUTO_INCREMENT,
   `table_type_id` int(11) NOT NULL,
   `player_id` int(11) NOT NULL,
   PRIMARY KEY (`table_id`),
@@ -134,7 +136,7 @@ DROP TABLE IF EXISTS `table_game`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `table_game` (
-  `step_id` int(11) NOT NULL,
+  `step_id` int(11) NOT NULL AUTO_INCREMENT,
   `bet_id` int(11) NOT NULL,
   `cards` varchar(20) NOT NULL,
   `player_type` varchar(6) NOT NULL,

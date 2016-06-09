@@ -11,12 +11,12 @@ import javax.persistence.*;
 @javax.persistence.Table(name = "account")
 public class Account {
     @Id
-    @Column(name = "account_id")
+    @Column(name = "player_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "login")
     private String login;
-    @Column(name = "nick_name")
+    @Column(name = "nickname")
     private String nickName;
     @Column(name = "balance")
     private Long balance;
