@@ -36,9 +36,11 @@ public class TableDaoImpl implements TableDao {
     @Override
     public TableBetRange getTableBetRange(long tableId) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        List<Table> table =  entityManager.createQuery("FROM Table", Table.class).getResultList();
-        System.out.println(table);
-        return null;
+        Table table = entityManager.createQuery("FROM Table where tableId = :id", Table.class)
+                .setParameter("id", tableId)
+                .getSingleResult();
+        TableType tableType = table.getTableTypeId();
+        return new TableBetRange(tableType.getMinBetSize(), tableType.getMaxBetSize());
     }
 
 

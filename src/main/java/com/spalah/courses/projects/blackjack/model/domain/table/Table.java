@@ -1,22 +1,27 @@
 package com.spalah.courses.projects.blackjack.model.domain.table;
 
+import com.spalah.courses.projects.blackjack.model.domain.account.Account;
+
 import javax.persistence.*;
 
 /**
  * Created by Dima on 08.06.2016.
  */
 @Entity
-@javax.persistence.Table(name = "table-player-communication")
+@javax.persistence.Table(name = "table_player_communication")
 public class Table {
     @Id
     @Column(name = "table_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long tableId;
 
-    private TableType tableType;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "table_type_id")
+    private TableType type;
 
-    @Column(name = "player_id")
-    private int playerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "player_id")
+    private Account player;
 
     public long getTableId() {
         return tableId;
@@ -27,21 +32,19 @@ public class Table {
     }
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "table_type_id", nullable = false)
     public TableType getTableTypeId() {
-        return tableType;
+        return type;
     }
 
     public void setTableTypeId(TableType tableType) {
-        this.tableType = tableType;
+        this.type = tableType;
     }
 
-    public int getPlayerId() {
-        return playerId;
+    public Account getPlayer() {
+        return player;
     }
 
-    public void setPlayerId(int playerId) {
-        this.playerId = playerId;
+    public void setPlayerId(Account playerId) {
+        this.player = playerId;
     }
 }

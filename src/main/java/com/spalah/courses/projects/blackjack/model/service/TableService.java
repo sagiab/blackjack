@@ -16,6 +16,7 @@ public class TableService{
 
     public TableService(TableDao tableDao, TableTypeDao tableTypeDao){
         this.tableDao = tableDao;
+        this.tableTypeDao = tableTypeDao;
     }
 
     public List<TableType> getTableTypesVariants() {

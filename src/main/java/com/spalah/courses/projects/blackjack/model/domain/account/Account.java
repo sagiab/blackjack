@@ -3,6 +3,7 @@ package com.spalah.courses.projects.blackjack.model.domain.account;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author Denis Loshkarev on 03.06.2016.
@@ -22,6 +23,17 @@ public class Account {
     private Long balance;
     @Column(name = "password")
     private String password;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "player")
+    private List<com.spalah.courses.projects.blackjack.model.domain.table.Table> tables;
+
+    public List<com.spalah.courses.projects.blackjack.model.domain.table.Table> getTables() {
+        return tables;
+    }
+
+    public void setTables(List<com.spalah.courses.projects.blackjack.model.domain.table.Table> tables) {
+        this.tables = tables;
+    }
 
     public Account() {
     }
