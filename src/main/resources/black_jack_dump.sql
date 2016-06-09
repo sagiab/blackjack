@@ -73,40 +73,40 @@ INSERT INTO `account` VALUES (1,'Den@Den','Den','$2a$10$fqXsfEVDctAI/39sk4BUFu3B
 UNLOCK TABLES;
 
 --
--- Table structure for table `bet-player-communication`
+-- Table structure for table `bet_player_communication`
 --
 
-DROP TABLE IF EXISTS `bet-player-communication`;
+DROP TABLE IF EXISTS `bet_player_communication`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `bet-player-communication` (
+CREATE TABLE `bet_player_communication` (
   `bet_id` int(11) NOT NULL AUTO_INCREMENT,
   `table_id` int(11) NOT NULL,
   `bet_size` int(11) NOT NULL,
   PRIMARY KEY (`bet_id`),
   KEY `fk_otstavkiigroka_stoligrok_com_idx` (`table_id`),
-  CONSTRAINT `fk_otstavkiigroka_stoligrok_com` FOREIGN KEY (`table_id`) REFERENCES `table-player-communication` (`table_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_otstavkiigroka_stoligrok_com` FOREIGN KEY (`table_id`) REFERENCES `table_player_communication` (`table_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `bet-player-communication`
+-- Dumping data for table `bet_player_communication`
 --
 
-LOCK TABLES `bet-player-communication` WRITE;
-/*!40000 ALTER TABLE `bet-player-communication` DISABLE KEYS */;
-INSERT INTO `bet-player-communication` VALUES (1,1,500);
-/*!40000 ALTER TABLE `bet-player-communication` ENABLE KEYS */;
+LOCK TABLES `bet_player_communication` WRITE;
+/*!40000 ALTER TABLE `bet_player_communication` DISABLE KEYS */;
+INSERT INTO `bet_player_communication` VALUES (1,1,500);
+/*!40000 ALTER TABLE `bet_player_communication` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `table-player-communication`
+-- Table structure for table `table_player_communication`
 --
 
-DROP TABLE IF EXISTS `table-player-communication`;
+DROP TABLE IF EXISTS `table_player_communication`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `table-player-communication` (
+CREATE TABLE `table_player_communication` (
   `table_id` int(11) NOT NULL AUTO_INCREMENT,
   `table_type_id` int(11) NOT NULL,
   `player_id` int(11) NOT NULL,
@@ -119,13 +119,13 @@ CREATE TABLE `table-player-communication` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `table-player-communication`
+-- Dumping data for table `table_player_communication`
 --
 
-LOCK TABLES `table-player-communication` WRITE;
-/*!40000 ALTER TABLE `table-player-communication` DISABLE KEYS */;
-INSERT INTO `table-player-communication` VALUES (1,2,1);
-/*!40000 ALTER TABLE `table-player-communication` ENABLE KEYS */;
+LOCK TABLES `table_player_communication` WRITE;
+/*!40000 ALTER TABLE `table_player_communication` DISABLE KEYS */;
+INSERT INTO `table_player_communication` VALUES (1,2,1);
+/*!40000 ALTER TABLE `table_player_communication` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -142,7 +142,7 @@ CREATE TABLE `table_game` (
   `player_type` varchar(6) NOT NULL,
   PRIMARY KEY (`step_id`),
   KEY `fk_stavka_stoligra_stavkaigrok_com_idx` (`bet_id`),
-  CONSTRAINT `fk_stavka_stoligra_stavkaigrok_com` FOREIGN KEY (`bet_id`) REFERENCES `bet-player-communication` (`bet_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_stavka_stoligra_stavkaigrok_com` FOREIGN KEY (`bet_id`) REFERENCES `bet_player_communication` (`bet_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
