@@ -18,13 +18,13 @@ USE `black_jack`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `тable_type`
+-- Table structure for table `table_type`
 --
 
-DROP TABLE IF EXISTS `тable_type`;
+DROP TABLE IF EXISTS `table_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `тable_type` (
+CREATE TABLE `table_type` (
   `table_type_id` int(11) NOT NULL,
   `min_bet` int(11) NOT NULL,
   `max_bet` int(11) NOT NULL,
@@ -33,13 +33,13 @@ CREATE TABLE `тable_type` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `тable_type`
+-- Dumping data for table `table_type`
 --
 
-LOCK TABLES `тable_type` WRITE;
-/*!40000 ALTER TABLE `тable_type` DISABLE KEYS */;
-INSERT INTO `тable_type` VALUES (1,10,100),(2,50,500),(3,100,1000);
-/*!40000 ALTER TABLE `тable_type` ENABLE KEYS */;
+LOCK TABLES `table_type` WRITE;
+/*!40000 ALTER TABLE `table_type` DISABLE KEYS */;
+INSERT INTO `table_type` VALUES (1,10,100),(2,50,500),(3,100,1000);
+/*!40000 ALTER TABLE `table_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -83,7 +83,7 @@ CREATE TABLE `bet-player-communication` (
   `bet_size` int(11) NOT NULL,
   PRIMARY KEY (`bet_id`),
   KEY `fk_otstavkiigroka_stoligrok_com_idx` (`table_id`),
-  CONSTRAINT `fk_otstavkiigroka_stoligrok_com` FOREIGN KEY (`table_id`) REFERENCES `table-player-communication` (`table_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_otstavkiigroka_stoligrok_com` FOREIGN KEY (`table_id`) REFERENCES `table-player-communication` (`table_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -111,8 +111,8 @@ CREATE TABLE `table-player-communication` (
   PRIMARY KEY (`table_id`),
   KEY `fk_player_table_player_com_idx` (`player_id`),
   KEY `fk_tipstola_stoligrok_com_idx` (`table_type_id`),
-  CONSTRAINT `fk_player_table_player_com` FOREIGN KEY (`player_id`) REFERENCES `account` (`player_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_tipstola_stoligrok_com` FOREIGN KEY (`table_type_id`) REFERENCES `тable_type` (`table_type_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_player_table_player_com` FOREIGN KEY (`player_id`) REFERENCES `account` (`player_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_tipstola_stoligrok_com` FOREIGN KEY (`table_type_id`) REFERENCES `table_type` (`table_type_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -140,7 +140,7 @@ CREATE TABLE `table_game` (
   `player_type` varchar(6) NOT NULL,
   PRIMARY KEY (`step_id`),
   KEY `fk_stavka_stoligra_stavkaigrok_com_idx` (`bet_id`),
-  CONSTRAINT `fk_stavka_stoligra_stavkaigrok_com` FOREIGN KEY (`bet_id`) REFERENCES `bet-player-communication` (`bet_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fk_stavka_stoligra_stavkaigrok_com` FOREIGN KEY (`bet_id`) REFERENCES `bet-player-communication` (`bet_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
