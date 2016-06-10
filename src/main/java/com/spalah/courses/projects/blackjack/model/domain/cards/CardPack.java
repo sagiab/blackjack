@@ -2,6 +2,7 @@ package com.spalah.courses.projects.blackjack.model.domain.cards;
 
 
 import com.spalah.courses.projects.blackjack.exception.AllCardsWereUsedException;
+import com.spalah.courses.projects.blackjack.model.domain.table.PlayerType;
 
 import java.util.*;
 
@@ -22,9 +23,10 @@ public class CardPack {
         CardType[] cardTypes = CardType.values();
         CardColor[] cardColors = CardColor.values();
         for (CardType cardType : cardTypes){for (CardColor cardColor : cardColors){
-                cards.add(new Card(cardColor, cardType));
+                cards.add(new Card(cardColor, cardType, PlayerType.common));
             }
         }
+        Collections.shuffle(cards); // должны шафлить или можно предугадать
     }
 
 

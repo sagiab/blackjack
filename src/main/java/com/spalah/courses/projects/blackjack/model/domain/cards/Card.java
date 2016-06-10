@@ -1,5 +1,7 @@
 package com.spalah.courses.projects.blackjack.model.domain.cards;
 
+import com.spalah.courses.projects.blackjack.model.domain.table.PlayerType;
+
 import java.util.Objects;
 
 /**
@@ -9,10 +11,20 @@ import java.util.Objects;
 public class Card {
     private CardColor cardColor;
     private CardType cardType;
+    private PlayerType playerType;
 
-    public Card(CardColor cardColor, CardType cardType){
+    public Card(CardColor cardColor, CardType cardType, PlayerType playerType){
         this.cardColor = cardColor;
         this.cardType = cardType;
+        this.playerType = playerType;
+    }
+
+    public PlayerType getPlayerType() {
+        return playerType;
+    }
+
+    public void setPlayerType(PlayerType playerType) {
+        this.playerType = playerType;
     }
 
     @Override
