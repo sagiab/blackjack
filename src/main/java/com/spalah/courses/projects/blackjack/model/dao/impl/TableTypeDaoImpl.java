@@ -13,25 +13,34 @@ import java.util.List;
  */
 public class TableTypeDaoImpl implements TableTypeDao {
     private static final String GET_ALL_TABLE_TYPES = "FROM TableType";
+    private static final String GET_TABLE_TYPE_BY_ID = "FROM TableType WHERE id = :id";
     private EntityManagerFactory entityManagerFactory;
 
     public TableTypeDaoImpl(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
 
-
-    @Override
-    public List<TableType> getTableTypesVariants() {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        return entityManager.createQuery(GET_ALL_TABLE_TYPES, TableType.class).getResultList();
-    }
-
-
-
     public static void main(String[] args) {
         String PERSISTENCE_UNIT = "com.spalah.courses.projects.blackjack";
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
         TableTypeDao tableTypeDao = new TableTypeDaoImpl(entityManagerFactory);
         System.out.println(tableTypeDao.getTableTypesVariants());
+    }
+
+    @Override
+    public List<TableType> getTableTypesVariants() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        return entityManager
+                .createQuery(GET_ALL_TABLE_TYPES, TableType.class)
+                .getResultList();
+    }
+
+    @Override
+    public TableType getTableTypeById(Long id) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        return entityManager
+                .createQuery(GET_TABLE_TYPE_BY_ID, TableType.class)
+                .setParameter("id", id)
+                .getSingleResult();
     }
 }
