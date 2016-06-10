@@ -85,7 +85,7 @@ public class TableGameService {
         public boolean test(Object o) {
             if (objectToDelete == null) throw new NullPointerException("Predicate was not set");
             Card card = (Card) o;
-            if (!card.getPlayerType().equals(objectToDelete)){
+            if (!card.getWhose().equals(objectToDelete)){
                 return true;
             }
             else{
@@ -97,7 +97,7 @@ public class TableGameService {
     public static void main(String[] args) {
         TableGameService tableService = new TableGameService();
         try {
-            System.out.println(tableService.getCard(PlayerType.player, 1L));
+            System.out.println(tableService.getCard(PlayerType.Player, 1L));
         } catch (BlackJackException e) {
             e.printStackTrace();
         }

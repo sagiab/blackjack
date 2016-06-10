@@ -11,21 +11,24 @@ import java.util.Objects;
 public class Card {
     private CardColor cardColor;
     private CardType cardType;
-    private PlayerType playerType;
+    private PlayerType whose; // show who own this card: player, dialer or none
 
-    public Card(CardColor cardColor, CardType cardType, PlayerType playerType){
+    public Card(CardColor cardColor, CardType cardType, PlayerType whose){
         this.cardColor = cardColor;
         this.cardType = cardType;
-        this.playerType = playerType;
+        this.whose = whose;
     }
 
-    public PlayerType getPlayerType() {
-        return playerType;
+    public Card(CardColor cardColor, CardType cardType) {
+        this.cardColor = cardColor;
+        this.cardType = cardType;
+        whose = PlayerType.Common;
     }
 
-    public void setPlayerType(PlayerType playerType) {
-        this.playerType = playerType;
+    public PlayerType getWhose() {
+        return whose;
     }
+
 
     @Override
     public int hashCode() {
