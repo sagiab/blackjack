@@ -7,7 +7,7 @@ import com.spalah.courses.projects.blackjack.model.dao.impl.TableDaoImpl;
 import com.spalah.courses.projects.blackjack.model.dao.impl.TableTypeDaoImpl;
 import com.spalah.courses.projects.blackjack.model.domain.cards.Card;
 import com.spalah.courses.projects.blackjack.model.domain.cards.CardPack;
-import com.spalah.courses.projects.blackjack.model.domain.table.PlayerType;
+import com.spalah.courses.projects.blackjack.model.domain.table.Holder;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -34,14 +34,14 @@ public class TableGameService {
     }
 
 
-    public Card getCard(PlayerType playerType, long tableId) throws AllCardsWereUsedException, PlayerCantHitAnymoreException {
+    public Card getCard(Holder holder, long tableId) throws AllCardsWereUsedException, PlayerCantHitAnymoreException {
         List<Card> usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
-        List<Card> playerOrDialerCards = getPlayerOrDillerCards(playerType, usedCards);
-        //System.out.println(playerOrDialerCards);
+        List<Card> holderCards = getHolderCards(holder, usedCards);
+        //System.out.println(holderCards);
         //берем карты игрока или дилераиз базы
 
-        int playerSum = sumCards(playerOrDialerCards); //считаем сумму карт нужного игрока,вместо -999999 - id
-        //System.out.println(playerType + "'s sum = " + playerSum);
+        int playerSum = sumCards(holderCards); //считаем сумму карт нужного игрока,вместо -999999 - id
+        //System.out.println(holder + "'s sum = " + playerSum);
         Card card = null;
         if (playerSum < MAX_SUM) {
             card = cardPack.nextCard(usedCards);
@@ -55,49 +55,28 @@ public class TableGameService {
         }
     }
 
-    private List<Card> getPlayerOrDillerCards(PlayerType playerType, List<Card> usedCards) {
+    private List<Card> getHolderCards(Holder holder, List<Card> usedCards) {
         List<Card> usedCardsCopy = new ArrayList<>(usedCards);
-        Predicate predicate = new Predicate<PlayerType>();
-        predicate.setPredicate(playerType);
-        usedCardsCopy.removeIf(predicate);
+        usedCardsCopy.removeIf(p -> !p.getWhose().equals(holder));
+        // delete those player cards which don't belong to this player type
 
         return usedCardsCopy;
     }
 
 
-    private int sumCards(List<Card> playerOrDialerCards) {
+    private int sumCards(List<Card> holderCards) {
         int sumOfCards = 0;
-        for (Card card : playerOrDialerCards) {
+        for (Card card : holderCards) {
             sumOfCards += card.getCardType().getValue();
         }
 
         return sumOfCards;
     }
 
-    class Predicate<PlayerType> implements java.util.function.Predicate<PlayerType>{
-        PlayerType objectToDelete;
-
-        void setPredicate(PlayerType predicate){
-            objectToDelete = predicate;
-        }
-
-        @Override
-        public boolean test(Object o) {
-            if (objectToDelete == null) throw new NullPointerException("Predicate was not set");
-            Card card = (Card) o;
-            if (!card.getWhose().equals(objectToDelete)){
-                return true;
-            }
-            else{
-                return false;
-            }
-        }
-    }
-
     public static void main(String[] args) {
         TableGameService tableService = new TableGameService();
         try {
-            System.out.println(tableService.getCard(PlayerType.Player, 1L));
+            System.out.println(tableService.getCard(Holder.DIALER, 1L));
         } catch (BlackJackException e) {
             e.printStackTrace();
         }
