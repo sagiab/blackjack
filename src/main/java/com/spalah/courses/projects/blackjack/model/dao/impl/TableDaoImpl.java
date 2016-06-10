@@ -77,12 +77,12 @@ public class TableDaoImpl implements TableDao {
         //get Cards from steps list, which are written as "<CardType><.><CardColor>'
         List<Card> usedCards = new ArrayList<>();
         for (TableGame tableGame : steps){
-            PlayerType playerType = PlayerType.valueOf(tableGame.getPlayerType());
+            PlayerType whoseCard = PlayerType.valueOf(tableGame.getPlayerType());
             String cardStr = tableGame.getCards();
-            String[] cardParts = cardStr.split("\\.");
+            String[] cardParts = cardStr.split("\\."); //экранирование точки
             CardType cardType = CardType.valueOf(cardParts[0]);
             CardColor cardColor = CardColor.valueOf(cardParts[1]);
-            usedCards.add(new Card(cardColor, cardType, playerType));
+            usedCards.add(new Card(cardColor, cardType, whoseCard));
         }
 
         return usedCards;
