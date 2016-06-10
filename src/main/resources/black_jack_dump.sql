@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `black_jack` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `black_jack`;
 -- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: black_jack
@@ -96,7 +94,7 @@ CREATE TABLE `table_game` (
 
 LOCK TABLES `table_game` WRITE;
 /*!40000 ALTER TABLE `table_game` DISABLE KEYS */;
-INSERT INTO `table_game` VALUES (1,1,'FIVE.CLUB','Diller'),(2,1,'SEVEN.DIAMOND','Player'),(3,1,'ACE.HEART','Diller'),(4,1,'QUEEN.SPADE','Player'),(5,1,'THREE.HEART','Player'),(6,1,'FOUR.HEART','Diller');
+INSERT INTO `table_game` VALUES (1,1,'FIVE.CLUB','DIALER'),(2,1,'SEVEN.DIAMOND','PLAYER'),(3,1,'ACE.HEART','DIALER'),(4,1,'QUEEN.SPADE','PLAYER'),(5,1,'THREE.HEART','PLAYER'),(6,1,'FOUR.HEART','DIALER');
 /*!40000 ALTER TABLE `table_game` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,4 +161,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-06-10 16:58:25
+-- Dump completed on 2016-06-10 18:31:03
