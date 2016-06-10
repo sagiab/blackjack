@@ -47,10 +47,7 @@ public class Card {
 
     @Override
     public String toString() {
-        return "Card{" +
-                "cardColor=" + cardColor +
-                ", cardType=" + cardType +
-                '}';
+        return getCardType() + "." + getCardColor();
     }
 
     public CardColor getCardColor() {
