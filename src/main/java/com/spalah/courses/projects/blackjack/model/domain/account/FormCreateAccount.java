@@ -9,13 +9,13 @@ import javax.validation.constraints.Size;
 public class FormCreateAccount {
     private final static String LOGIN_PATTERN = "^[a-zA-Z]+[a-zA-Z0-9]+$";
 
-    @Size(min = 4)
+    @Size(min = 4, max = 40)
     @Pattern(regexp = LOGIN_PATTERN)
     private String login;
-    @Size(min = 4)
+    @Size(min = 4, max = 40)
     @Pattern(regexp = LOGIN_PATTERN)
     private String nickName;
-    @Size(min = 4)
+    @Size(min = 4, max = 40)
     @Pattern(regexp = "^[a-zA-Z0-9]+$")
     private String password;
 

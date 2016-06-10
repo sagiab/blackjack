@@ -6,7 +6,14 @@ import com.spalah.courses.projects.blackjack.model.domain.account.Account;
 import org.mindrot.jbcrypt.BCrypt;
 
 import javax.persistence.NoResultException;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Denis Loshkarev on 03.06.2016.
@@ -31,16 +38,32 @@ public class AccountService {
     }
 
     public void createAccount(Account account) throws AccountException {
-        if (isUnique(account)) {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
+        Set<ConstraintViolation<Account>> valid = validator.validate(account);
+
+        if (valid.size() == 0 && isUnique(account)) {
             String passHash = BCrypt.hashpw(account.getPassword(), BCrypt.gensalt());
             account.setPassword(passHash);
             account.setBalance(STARTED_BALANCE);
             accountDao.createAccount(account);
+        } else {
+            Map<String, String> errors = new HashMap<>();
+            for (ConstraintViolation<Account> errorElement : valid) {
+                errors.put(errorElement.getPropertyPath().toString(), errorElement.getMessageTemplate());
+            }
+            throw new AccountException("Fields aren't valid", errors);
         }
     }
 
-    public void deleteAccount(Account account) {
-        accountDao.deleteAccount(account.getLogin());
+    public void deleteAccount(String login, String password) throws AccountException {
+        Account account;
+        if (login != null && password != null) {
+            account = getAccount(login, password);
+            accountDao.deleteAccount(account.getLogin());
+        } else {
+            throw new AccountException("The account information is not complete");
+        }
     }
 
     private boolean isUnique(Account account) throws AccountException {
