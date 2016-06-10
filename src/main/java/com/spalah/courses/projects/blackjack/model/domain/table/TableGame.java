@@ -24,7 +24,7 @@ public class TableGame {
     private String cards;
 
     @Column(name = "player_type")
-    private PlayerType playerType;
+    private String playerType;
 
     public long getStepId() {
         return stepId;
@@ -50,11 +50,11 @@ public class TableGame {
         this.cards = cards;
     }
 
-    public PlayerType getPlayerType() {
+    public String getPlayerType() {
         return playerType;
     }
 
-    public void setPlayerType(PlayerType playerType) {
+    public void setPlayerType(String playerType) {
         this.playerType = playerType;
     }
 

@@ -1,5 +1,7 @@
 package com.spalah.courses.projects.blackjack.model.domain.cards;
 
+import com.spalah.courses.projects.blackjack.model.domain.table.Holder;
+
 import java.util.Objects;
 
 /**
@@ -9,11 +11,24 @@ import java.util.Objects;
 public class Card {
     private CardColor cardColor;
     private CardType cardType;
+    private Holder whose; // show who own this card: player, dialer or none
 
-    public Card(CardColor cardColor, CardType cardType){
+    public Card(CardColor cardColor, CardType cardType, Holder whose){
         this.cardColor = cardColor;
         this.cardType = cardType;
+        this.whose = whose;
     }
+
+    public Card(CardColor cardColor, CardType cardType) {
+        this.cardColor = cardColor;
+        this.cardType = cardType;
+        whose = Holder.COMMON;
+    }
+
+    public Holder getWhose() {
+        return whose;
+    }
+
 
     @Override
     public int hashCode() {

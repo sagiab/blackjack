@@ -25,6 +25,7 @@ public class CardPack {
                 cards.add(new Card(cardColor, cardType));
             }
         }
+        Collections.shuffle(cards); // должны шафлить или можно предугадать
     }
 
 

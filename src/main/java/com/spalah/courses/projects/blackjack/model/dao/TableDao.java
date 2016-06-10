@@ -1,6 +1,7 @@
 package com.spalah.courses.projects.blackjack.model.dao;
 
 import com.spalah.courses.projects.blackjack.model.domain.account.Account;
+import com.spalah.courses.projects.blackjack.model.domain.cards.Card;
 import com.spalah.courses.projects.blackjack.model.domain.commands.Command;
 import com.spalah.courses.projects.blackjack.model.domain.table.Table;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableBetRange;
@@ -17,4 +18,6 @@ public interface TableDao {
     List<Command> getAvailableCommands(Table table);
 
     TableBetRange getTableBetRange(long tableId);
+
+    List<Card> getUsedCards(long tableId);
 }
