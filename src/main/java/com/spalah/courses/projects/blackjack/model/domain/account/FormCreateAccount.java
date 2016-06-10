@@ -12,9 +12,11 @@ public class FormCreateAccount {
     @Size(min = 4, max = 40)
     @Pattern(regexp = LOGIN_PATTERN)
     private String login;
+
     @Size(min = 4, max = 40)
     @Pattern(regexp = LOGIN_PATTERN)
     private String nickName;
+
     @Size(min = 4, max = 40)
     @Pattern(regexp = "^[a-zA-Z0-9]+$")
     private String password;

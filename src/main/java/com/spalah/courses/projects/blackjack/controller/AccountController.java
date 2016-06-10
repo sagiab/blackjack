@@ -6,17 +6,12 @@ import com.spalah.courses.projects.blackjack.model.domain.account.FormCreateAcco
 import com.spalah.courses.projects.blackjack.model.domain.account.FormLoginAccount;
 import com.spalah.courses.projects.blackjack.model.domain.status.StatusMessage;
 import com.spalah.courses.projects.blackjack.model.service.AccountService;
-import org.apache.commons.lang3.text.StrBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.*;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import javax.validation.Valid;
 
 /**
  * @author Denis Loshkarev on 03.06.2016.
@@ -40,13 +35,13 @@ public class AccountController {
         account.setNickName(formAccount.getNickName());
         account.setPassword(formAccount.getPassword());
         accountService.createAccount(account);
-        return new StatusMessage().well("Account " + formAccount.getLogin() + " is created");
+        return new StatusMessage().well("Account " + account.getLogin() + " is created");
     }
 
     @RequestMapping(value = "/account/login",
             method = RequestMethod.POST)
     @ResponseBody
-    public StatusMessage createAccount(@RequestBody FormLoginAccount loginAccount) throws AccountException {
+    public StatusMessage createAccount(@Valid @RequestBody FormLoginAccount loginAccount) throws AccountException {
         String login = loginAccount.getLogin();
         String password = loginAccount.getPassword();
         Account account = accountService.getAccount(login, password);

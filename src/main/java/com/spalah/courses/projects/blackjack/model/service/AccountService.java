@@ -38,21 +38,11 @@ public class AccountService {
     }
 
     public void createAccount(Account account) throws AccountException {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        Set<ConstraintViolation<Account>> valid = validator.validate(account);
-
-        if (valid.size() == 0 && isUnique(account)) {
+        if (isUnique(account)) {
             String passHash = BCrypt.hashpw(account.getPassword(), BCrypt.gensalt());
             account.setPassword(passHash);
             account.setBalance(STARTED_BALANCE);
             accountDao.createAccount(account);
-        } else {
-            Map<String, String> errors = new HashMap<>();
-            for (ConstraintViolation<Account> errorElement : valid) {
-                errors.put(errorElement.getPropertyPath().toString(), errorElement.getMessageTemplate());
-            }
-            throw new AccountException("Fields aren't valid", errors);
         }
     }
 
