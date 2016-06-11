@@ -50,7 +50,7 @@ public class TableGameService {
 
         int cardSum = calculateCardsSum(holderCards);
         //System.out.println(holder + "'s sum = " + cardSum);
-        Card card = null;
+        Card card = null;   
         if (cardSum < MAX_SUM) {
             card = cardPack.nextCard(usedCards);
             tableGameDao.addCard(card, tableId, holder);//добавляем эту карту в базу

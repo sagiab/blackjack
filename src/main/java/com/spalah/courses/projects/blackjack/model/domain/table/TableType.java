@@ -1,7 +1,6 @@
 package com.spalah.courses.projects.blackjack.model.domain.table;
 
 import javax.persistence.*;
-import java.util.*;
 
 /**
  * @author Denis Loshkarev on 03.06.2016.
@@ -40,7 +39,7 @@ public class TableType {
         return maxBetSize;
     }
 
-    public void setMaxBetSize(int maxBetSize) {
+    public void setMaxBetS1ize(int maxBetSize) {
         this.maxBetSize = maxBetSize;
     }
 
