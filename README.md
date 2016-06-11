@@ -103,19 +103,24 @@
         BODY: NONE
         EFFECT: Gets available commands for this state of game or error message if the game not started.
         RESPONSE:  JSON
-            {
-                "comands": [
-                    {
-                        "name": "HIT",
-                        "available": false 
-                    },
-                    {
-                        "name": "BET",
-                        "available": true 
-                    }
-                    ...
-                ]                
-            }
+            [
+                {
+                    "type": "HIT",
+                    "available": true
+                },
+                {
+                    "type": "BET",
+                    "available": false
+                },
+                {
+                    "type": "STAND",
+                    "available": true
+                },
+                {
+                    "type": "EXIT",
+                    "available": true
+                }
+            ]
        
     ```
 

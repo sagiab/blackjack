@@ -1,18 +1,15 @@
 package com.spalah.courses.projects.blackjack.model.service;
 
-import com.spalah.courses.projects.blackjack.exception.AllCardsWereUsedException;
-import com.spalah.courses.projects.blackjack.exception.BlackJackException;
-import com.spalah.courses.projects.blackjack.exception.PlayerCantHitAnymoreException;
-import com.spalah.courses.projects.blackjack.model.dao.impl.TableDaoImpl;
-import com.spalah.courses.projects.blackjack.model.dao.impl.TableTypeDaoImpl;
+import com.spalah.courses.projects.blackjack.exception.*;
+import com.spalah.courses.projects.blackjack.model.domain.account.Account;
 import com.spalah.courses.projects.blackjack.model.domain.cards.Card;
 import com.spalah.courses.projects.blackjack.model.domain.cards.CardPack;
 import com.spalah.courses.projects.blackjack.model.domain.commands.Command;
 import com.spalah.courses.projects.blackjack.model.domain.commands.CommandType;
 import com.spalah.courses.projects.blackjack.model.domain.table.Holder;
+import com.spalah.courses.projects.blackjack.model.domain.table.Table;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,27 +20,50 @@ public class TableGameService {
 
     private static final int MAX_SUM = 21;
     private CardPack cardPack;
+    @Autowired
     private TableService tableService;
+    @Autowired
+    private AccountService accountService;
 
 
     public TableGameService() {
         cardPack = new CardPack();
-        //пока так. НО ИСПРАВИТЬ c autowired !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        String PERSISTENCE_UNIT = "com.spalah.courses.projects.blackjack";
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
-        tableService = new TableService(new TableDaoImpl(entityManagerFactory), new TableTypeDaoImpl(entityManagerFactory));
-
     }
 
-    public List<Command> getAvailCommands(Long tableId) {
+    public static void main(String[] args) {
+        TableGameService tableService = new TableGameService();
+        try {
+            System.out.println(tableService.getCard(Holder.DIALER, 1L));
+        } catch (BlackJackException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Command> getAvailCommands(String login, Long tableId) throws AccountException, TableException {
+        checkTableIdByLogin(login, tableId);
         List<Command> commands = new ArrayList<>();
         List<Card> cards = tableService.getUsedCards(tableId);
         if (cards.size() > 0) {
             commands.add(new Command(CommandType.HIT).available());
             commands.add(new Command(CommandType.BET).banned());
+            commands.add(new Command(CommandType.STAND).available());
+            commands.add(new Command(CommandType.EXIT).available());
+        } else {
+            commands.add(new Command(CommandType.HIT).available());
+            commands.add(new Command(CommandType.BET).banned());
+            commands.add(new Command(CommandType.STAND).available());
             commands.add(new Command(CommandType.EXIT).available());
         }
         return commands;
+    }
+
+    // Throw exception if table with id = tableId created by another Player
+    private void checkTableIdByLogin(String login, Long tableId) throws AccountException, TableException {
+        Table table = tableService.getTable(tableId);
+        Account account = accountService.getAccount(login);
+        if (!table.getPlayer().equals(account)) {
+            throw new TableException("Sorry, but this table created by another player");
+        }
     }
 
     public Card getCard(Holder holder, long tableId) throws AllCardsWereUsedException, PlayerCantHitAnymoreException {
@@ -59,10 +79,9 @@ public class TableGameService {
             card = cardPack.nextCard(usedCards);
             //добавляем эту карту в базу
         }
-        if (card != null){
+        if (card != null) {
             return card;
-        }
-        else {
+        } else {
             throw new PlayerCantHitAnymoreException();
         }
     }
@@ -75,7 +94,6 @@ public class TableGameService {
         return usedCardsCopy;
     }
 
-
     private int sumCards(List<Card> holderCards) {
         int sumOfCards = 0;
         for (Card card : holderCards) {
@@ -83,14 +101,5 @@ public class TableGameService {
         }
 
         return sumOfCards;
-    }
-
-    public static void main(String[] args) {
-        TableGameService tableService = new TableGameService();
-        try {
-            System.out.println(tableService.getCard(Holder.DIALER, 1L));
-        } catch (BlackJackException e) {
-            e.printStackTrace();
-        }
     }
 }

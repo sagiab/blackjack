@@ -16,7 +16,7 @@ import java.util.List;
 public interface TableDao {
     Table createTable(TableType tableType, Account account);
 
-    TableBetRange getTableBetRange(long tableId);
+    Table getTable(long tableId);
 
     /*
     *  Method returns already usedCards, so it is useful to

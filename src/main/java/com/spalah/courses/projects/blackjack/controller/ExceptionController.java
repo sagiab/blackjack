@@ -1,6 +1,7 @@
 package com.spalah.courses.projects.blackjack.controller;
 
 import com.spalah.courses.projects.blackjack.exception.AccountException;
+import com.spalah.courses.projects.blackjack.exception.TableException;
 import com.spalah.courses.projects.blackjack.model.domain.status.StatusMessage;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,6 +20,13 @@ public class ExceptionController {
     public StatusMessage accountException(AccountException e) {
         StatusMessage statusMessage = new StatusMessage().error(e);
         statusMessage.add(e.getObject());
+        return statusMessage;
+    }
+
+    @ExceptionHandler(TableException.class)
+    @ResponseBody
+    public StatusMessage accountException(TableException e) {
+        StatusMessage statusMessage = new StatusMessage().error(e);
         return statusMessage;
     }
 

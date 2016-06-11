@@ -7,7 +7,6 @@ import com.spalah.courses.projects.blackjack.model.domain.account.Account;
 import com.spalah.courses.projects.blackjack.model.domain.cards.Card;
 import com.spalah.courses.projects.blackjack.model.domain.cards.CardColor;
 import com.spalah.courses.projects.blackjack.model.domain.cards.CardType;
-import com.spalah.courses.projects.blackjack.model.domain.commands.Command;
 import com.spalah.courses.projects.blackjack.model.domain.table.Holder;
 import com.spalah.courses.projects.blackjack.model.domain.table.Table;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableGame;
@@ -32,8 +31,12 @@ public class TableService {
         this.tableTypeDao = tableTypeDao;
     }
 
-    public static void main(String[] args) {
+    public List<TableType> getTableTypesVariants() {
+        return tableTypeDao.getTableTypesVariants();
+    }
 
+    public Table getTable(Long tableId) {
+        return tableDao.getTable(tableId);
     }
 
     public Table createTable(Long tableTypeId, String login) throws AccountException {
@@ -47,7 +50,7 @@ public class TableService {
 
         //get Cards from steps list, which are written as "<CardType><.><CardColor>'
         List<Card> usedCards = new ArrayList<>();
-        for (TableGame tableGame : steps){
+        for (TableGame tableGame : steps) {
             Holder whoseCard = Holder.valueOf(tableGame.getPlayerType());
             String cardStr = tableGame.getCards();
             String[] cardParts = cardStr.split("\\."); //экранирование точки
@@ -57,9 +60,5 @@ public class TableService {
         }
 
         return usedCards;
-    }
-
-    public List<TableType> getTableTypesVariants() {
-        return tableTypeDao.getTableTypesVariants();
     }
 }

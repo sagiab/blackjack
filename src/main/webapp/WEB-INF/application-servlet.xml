@@ -12,25 +12,43 @@
 
     <context:component-scan base-package="com.spalah.courses.projects.blackjack"/>
 
-    <bean id="accountService" class="com.spalah.courses.projects.blackjack.model.service.AccountService">
+    <bean id="accountService"
+          class="com.spalah.courses.projects.blackjack.model.service.AccountService">
         <constructor-arg ref="accountDao"/>
     </bean>
-    <bean id="tableService" class="com.spalah.courses.projects.blackjack.model.service.TableService">
+
+    <bean id="tableService"
+          class="com.spalah.courses.projects.blackjack.model.service.TableService">
         <constructor-arg ref="tableDao"/>
         <constructor-arg ref="tableTypeDao"/>
     </bean>
 
-    <bean id="accountDao" class="com.spalah.courses.projects.blackjack.model.dao.impl.AccountDaoImpl">
-        <constructor-arg ref="entityManagerFactory" />
+    <bean id="tableGameService"
+          class="com.spalah.courses.projects.blackjack.model.service.TableGameService">
     </bean>
-    <bean id="tableDao" class="com.spalah.courses.projects.blackjack.model.dao.impl.TableDaoImpl">
-        <constructor-arg ref="entityManagerFactory" />
-    </bean>
-    <bean id="tableTypeDao" class="com.spalah.courses.projects.blackjack.model.dao.impl.TableTypeDaoImpl">
+
+
+
+    <bean id="accountDao"
+          class="com.spalah.courses.projects.blackjack.model.dao.impl.AccountDaoImpl">
         <constructor-arg ref="entityManagerFactory" />
     </bean>
 
-    <bean id="entityManagerFactory" factory-method="getEntityManagerFactory" class="com.spalah.courses.projects.blackjack.Main">
+    <bean id="tableDao"
+          class="com.spalah.courses.projects.blackjack.model.dao.impl.TableDaoImpl">
+        <constructor-arg ref="entityManagerFactory" />
+    </bean>
+
+    <bean id="tableTypeDao"
+          class="com.spalah.courses.projects.blackjack.model.dao.impl.TableTypeDaoImpl">
+        <constructor-arg ref="entityManagerFactory" />
+    </bean>
+
+
+
+    <bean id="entityManagerFactory"
+          factory-method="getEntityManagerFactory"
+          class="com.spalah.courses.projects.blackjack.Main">
         <constructor-arg value="com.spalah.courses.projects.blackjack"/>
     </bean>
 
