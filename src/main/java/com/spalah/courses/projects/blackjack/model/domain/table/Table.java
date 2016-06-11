@@ -4,7 +4,7 @@ import com.spalah.courses.projects.blackjack.model.domain.account.Account;
 import com.spalah.courses.projects.blackjack.model.domain.bet.Bet;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.List;
 
 /**
  * Created by Dima on 08.06.2016.
@@ -25,6 +25,9 @@ public class Table {
     @JoinColumn(name = "player_id")
     private Account player;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "table")
+    private List<Bet> bets;
+
     public List<Bet> getBets() {
         return bets;
     }
@@ -32,9 +35,6 @@ public class Table {
     public void setBets(List<Bet> bets) {
         this.bets = bets;
     }
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "table")
-    private List<Bet> bets;
 
     public long getTableId() {
         return tableId;

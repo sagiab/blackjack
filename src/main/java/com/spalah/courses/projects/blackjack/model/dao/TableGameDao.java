@@ -11,5 +11,5 @@ public interface TableGameDao {
 
     List getPlayerCards(String playerLogin);
 
-    void addCard(Card card, long tableId, Holder holder);
+    void addCard(Card card, long tableId);
 }

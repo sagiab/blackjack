@@ -88,31 +88,31 @@ public class TableGameService {
         List<Card> firstCards = new ArrayList<>();
         int playerSum = 0;
 
-        List<Card> usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
-        Card newPlayerCard = cardPack.nextCard(usedCards);
+//        List<Card> usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
+        Card newPlayerCard = cardPack.nextCard(firstCards);
         playerSum += newPlayerCard.getCardType().getValue();
-        tableGameDao.addCard(newPlayerCard, tableId, Holder.PLAYER);//добавляем эту карту в базу
         newPlayerCard.setWhose(Holder.PLAYER);
+        tableGameDao.addCard(newPlayerCard, tableId);//добавляем эту карту в базу
         firstCards.add(newPlayerCard);
 
-        usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
-        Card newDialerCard = cardPack.nextCard(usedCards);
-        tableGameDao.addCard(newDialerCard, tableId, Holder.DIALER);//добавляем эту карту в базу
+//        usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
+        Card newDialerCard = cardPack.nextCard(firstCards);
         newDialerCard.setWhose(Holder.DIALER);
+        tableGameDao.addCard(newDialerCard, tableId);//добавляем эту карту в базу
         firstCards.add(newDialerCard);
 
 
-        usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
-        newPlayerCard = cardPack.nextCard(usedCards);
+//        usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
+        newPlayerCard = cardPack.nextCard(firstCards);
         playerSum += newPlayerCard.getCardType().getValue();
-        tableGameDao.addCard(newPlayerCard, tableId, Holder.PLAYER);//добавляем эту карту в базу
         newPlayerCard.setWhose(Holder.PLAYER);
+        tableGameDao.addCard(newPlayerCard, tableId);//добавляем эту карту в базу
         firstCards.add(newPlayerCard);
 
-        usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
-        newDialerCard = cardPack.nextCard(usedCards);
-        tableGameDao.addCard(newDialerCard, tableId, Holder.DIALER);//добавляем эту карту в базу
+//        usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
+        newDialerCard = cardPack.nextCard(firstCards);
         newDialerCard.setWhose(Holder.DIALER);
+        tableGameDao.addCard(newDialerCard, tableId);//добавляем эту карту в базу
         firstCards.add(newDialerCard);
 
         if (playerSum == 21) {
@@ -131,7 +131,8 @@ public class TableGameService {
         //System.out.println(holderCards);
 
         Card newCard = cardPack.nextCard(usedCards);
-        tableGameDao.addCard(newCard, tableId, Holder.PLAYER);//добавляем эту карту в базу
+        newCard.setWhose(Holder.PLAYER);
+        tableGameDao.addCard(newCard, tableId);//добавляем эту карту в базу
 
         List<Card> playerCards = getHolderCards(Holder.PLAYER, usedCards);
         playerCards.add(newCard);

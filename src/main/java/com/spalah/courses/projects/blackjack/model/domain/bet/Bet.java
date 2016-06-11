@@ -1,5 +1,6 @@
 package com.spalah.courses.projects.blackjack.model.domain.bet;
 
+import com.spalah.courses.projects.blackjack.model.domain.table.Table;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableGame;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ public class Bet {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "table_id")
-    private com.spalah.courses.projects.blackjack.model.domain.table.Table table;
+    private Table table;
 
     @Column(name = "bet_size")
     private int betSize;
@@ -34,11 +35,11 @@ public class Bet {
         this.betId = betId;
     }
 
-    public com.spalah.courses.projects.blackjack.model.domain.table.Table getTable() {
+    public Table getTable() {
         return table;
     }
 
-    public void setTable(com.spalah.courses.projects.blackjack.model.domain.table.Table table) {
+    public void setTable(Table table) {
         this.table = table;
     }
 

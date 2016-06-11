@@ -29,7 +29,7 @@ public class TableGameDaoImpl implements TableGameDao {
     }
 
     @Override
-    public void addCard(Card card, long tableId, Holder holder) {
+    public void addCard(Card card, long tableId) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
 
@@ -38,7 +38,7 @@ public class TableGameDaoImpl implements TableGameDao {
         Bet tableBet = table.getBets().get(0);
         tableGame.setBet(tableBet);
         tableGame.setCards(card.toString());
-        tableGame.setCardsHolder(holder.toString());
+        tableGame.setCardsHolder(card.getWhose().toString());
 
         entityManager.persist(tableGame);
         entityManager.getTransaction().commit();
