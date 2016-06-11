@@ -30,6 +30,10 @@ public class Card {
     }
 
 
+    public void setWhose(Holder whose) {
+        this.whose = whose;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(cardColor,cardType);
@@ -47,10 +51,7 @@ public class Card {
 
     @Override
     public String toString() {
-        return "Card{" +
-                "cardColor=" + cardColor +
-                ", cardType=" + cardType +
-                '}';
+        return getCardType() + "." + getCardColor();
     }
 
     public CardColor getCardColor() {

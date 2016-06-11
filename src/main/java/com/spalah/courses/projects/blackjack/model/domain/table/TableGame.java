@@ -24,7 +24,7 @@ public class TableGame {
     private String cards;
 
     @Column(name = "player_type")
-    private String playerType;
+    private String cardsHolder;
 
     public long getStepId() {
         return stepId;
@@ -50,12 +50,12 @@ public class TableGame {
         this.cards = cards;
     }
 
-    public String getPlayerType() {
-        return playerType;
+    public String getCardsHolder() {
+        return cardsHolder;
     }
 
-    public void setPlayerType(String playerType) {
-        this.playerType = playerType;
+    public void setCardsHolder(String cardsHolder) {
+        this.cardsHolder = cardsHolder;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class TableGame {
                 "stepId=" + stepId +
                 ", bet=" + bet +
                 ", cards='" + cards + '\'' +
-                ", playerType='" + playerType + '\'' +
+                ", cardsHolder='" + cardsHolder + '\'' +
                 '}';
     }
 }

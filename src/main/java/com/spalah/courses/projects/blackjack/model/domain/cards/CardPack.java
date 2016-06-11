@@ -42,6 +42,9 @@ public class CardPack {
         throw new AllCardsWereUsedException();
     }
 
+    public List<Card> getCards() {
+        return cards;
+    }
 
     public static void main(String[] args) {
         CardPack cardPack = new CardPack();

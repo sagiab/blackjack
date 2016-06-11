@@ -39,7 +39,7 @@ public class TableType {
         return maxBetSize;
     }
 
-    public void setMaxBetSize(int maxBetSize) {
+    public void setMaxBetS1ize(int maxBetSize) {
         this.maxBetSize = maxBetSize;
     }
 
