@@ -1,7 +1,6 @@
 package com.spalah.courses.projects.blackjack.model.domain.table;
 
 import javax.persistence.*;
-import java.util.*;
 
 /**
  * @author Denis Loshkarev on 03.06.2016.

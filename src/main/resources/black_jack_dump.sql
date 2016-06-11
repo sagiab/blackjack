@@ -37,6 +37,7 @@ CREATE TABLE `account` (
 
 --
 -- Dumping data for table `account`
+-- Password: 12345
 --
 
 LOCK TABLES `account` WRITE;

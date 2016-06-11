@@ -42,11 +42,6 @@ public class TableDaoImpl implements TableDao {
     }
 
     @Override
-    public List<Command> getAvailableCommands(Table table) {
-        return null;
-    }
-
-    @Override
     public TableBetRange getTableBetRange(long tableId) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         Table table = entityManager.createQuery("FROM Table where tableId = :id", Table.class)
@@ -62,7 +57,7 @@ public class TableDaoImpl implements TableDao {
      *  @return list of used cards
      */
     @Override
-    public List<Card> getUsedCards(long tableId) {
+    public List<TableGame> getSteps(long tableId) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         //get table with id
         Table table = entityManager.createQuery("FROM Table where tableId = :id", Table.class)
@@ -70,22 +65,10 @@ public class TableDaoImpl implements TableDao {
                 .getSingleResult();
         Bet bet = table.getBets().get(0); // только один Bet на table
         //get all steps for this bet
-        List<TableGame> steps = entityManager.createQuery("FROM TableGame where bet.betId = :betId", TableGame.class)
+
+        return entityManager.createQuery("FROM TableGame where bet.betId = :betId", TableGame.class)
                 .setParameter("betId", bet.getBetId())
                 .getResultList();
-
-        //get Cards from steps list, which are written as "<CardType><.><CardColor>'
-        List<Card> usedCards = new ArrayList<>();
-        for (TableGame tableGame : steps){
-            Holder whoseCard = Holder.valueOf(tableGame.getPlayerType());
-            String cardStr = tableGame.getCards();
-            String[] cardParts = cardStr.split("\\."); //экранирование точки
-            CardType cardType = CardType.valueOf(cardParts[0]);
-            CardColor cardColor = CardColor.valueOf(cardParts[1]);
-            usedCards.add(new Card(cardColor, cardType, whoseCard));
-        }
-
-        return usedCards;
     }
 
 
@@ -110,6 +93,6 @@ public class TableDaoImpl implements TableDao {
     }
 
     public static void testGetUsedCards(TableDao tableDao){
-        tableDao.getUsedCards(1);
+        tableDao.getSteps(1);
     }
 }

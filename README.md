@@ -33,12 +33,16 @@
 
         URL: /account/login
         TYPE: POST
-        BODY: NONE
-        EFFECT: User info like login, nickname, balance
-        RESPONSE: JSON
+        BODY: JSON
             {
                 "login": "login",
                 "password": "password"
+            }
+        EFFECT: User info like login, nickname, balance
+        RESPONSE: JSON
+            {
+                "nickName": "NickName",
+                "balance": 10000
             }
             
     ```

@@ -7,6 +7,8 @@ import com.spalah.courses.projects.blackjack.model.dao.impl.TableDaoImpl;
 import com.spalah.courses.projects.blackjack.model.dao.impl.TableTypeDaoImpl;
 import com.spalah.courses.projects.blackjack.model.domain.cards.Card;
 import com.spalah.courses.projects.blackjack.model.domain.cards.CardPack;
+import com.spalah.courses.projects.blackjack.model.domain.commands.Command;
+import com.spalah.courses.projects.blackjack.model.domain.commands.CommandType;
 import com.spalah.courses.projects.blackjack.model.domain.table.Holder;
 
 import javax.persistence.EntityManagerFactory;
@@ -33,6 +35,16 @@ public class TableGameService {
 
     }
 
+    public List<Command> getAvailCommands(Long tableId) {
+        List<Command> commands = new ArrayList<>();
+        List<Card> cards = tableService.getUsedCards(tableId);
+        if (cards.size() > 0) {
+            commands.add(new Command(CommandType.HIT).available());
+            commands.add(new Command(CommandType.BET).banned());
+            commands.add(new Command(CommandType.EXIT).available());
+        }
+        return commands;
+    }
 
     public Card getCard(Holder holder, long tableId) throws AllCardsWereUsedException, PlayerCantHitAnymoreException {
         List<Card> usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
