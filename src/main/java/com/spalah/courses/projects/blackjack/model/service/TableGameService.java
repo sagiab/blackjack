@@ -74,9 +74,15 @@ public class TableGameService {
             sumOfCards += card.getCardType().getValue();
         }
 
-        if (sumOfCards >= MAX_SUM) {
-            if (holderCards.stream().anyMatch(c -> c.getCardType().equals(CardType.ACE))) {
-                sumOfCards = sumOfCards - CardType.ACE.getValue() + ACE_VALUE_WHEN_MORE_THAN_MAX_SUM;
+        if (sumOfCards >= MAX_SUM) { // if some too much ACE's are counted as 1(if holder have them, otherwise he lose)
+            int numberOfAces = 0;
+            for (Card card : holderCards){
+                if (card.getCardType().equals(CardType.ACE)){
+                    numberOfAces ++;
+                }
+            }
+            if (numberOfAces > 0) {
+                sumOfCards = sumOfCards - (CardType.ACE.getValue() * numberOfAces) + (ACE_VALUE_WHEN_MORE_THAN_MAX_SUM * numberOfAces);
             }
         }
 
