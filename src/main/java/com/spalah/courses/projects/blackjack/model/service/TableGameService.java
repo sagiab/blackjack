@@ -9,6 +9,8 @@ import com.spalah.courses.projects.blackjack.model.dao.impl.TableTypeDaoImpl;
 import com.spalah.courses.projects.blackjack.model.domain.cards.Card;
 import com.spalah.courses.projects.blackjack.model.domain.cards.CardPack;
 import com.spalah.courses.projects.blackjack.model.domain.cards.CardType;
+import com.spalah.courses.projects.blackjack.model.domain.commands.Command;
+import com.spalah.courses.projects.blackjack.model.domain.commands.CommandType;
 import com.spalah.courses.projects.blackjack.model.domain.table.Holder;
 
 import javax.persistence.EntityManagerFactory;
@@ -38,25 +40,83 @@ public class TableGameService {
 
     }
 
+    public List<Command> getAvailCommands(Long tableId) {
+        List<Command> commands = new ArrayList<>();
+        List<Card> cards = tableService.getUsedCards(tableId);
+        if (cards.size() > 0) {
+            commands.add(new Command(CommandType.HIT).available());
+            commands.add(new Command(CommandType.BET).banned());
+            commands.add(new Command(CommandType.EXIT).available());
+        }
+        return commands;
+    }
+
+    public List<Card> startFirstRound(long tableId) throws AllCardsWereUsedException {
+        List<Card> firstCards = new ArrayList<>();
+        int playerSum = 0;
+
+        List<Card> usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
+        Card newPlayerCard = cardPack.nextCard(usedCards);
+        playerSum += newPlayerCard.getCardType().getValue();
+        tableGameDao.addCard(newPlayerCard, tableId, Holder.PLAYER);//добавляем эту карту в базу
+        newPlayerCard.setWhose(Holder.PLAYER);
+        firstCards.add(newPlayerCard);
+
+        usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
+        Card newDialerCard = cardPack.nextCard(usedCards);
+        tableGameDao.addCard(newDialerCard, tableId, Holder.DIALER);//добавляем эту карту в базу
+        newDialerCard.setWhose(Holder.DIALER);
+        firstCards.add(newDialerCard);
+
+
+        usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
+        newPlayerCard = cardPack.nextCard(usedCards);
+        playerSum += newPlayerCard.getCardType().getValue();
+        tableGameDao.addCard(newPlayerCard, tableId, Holder.PLAYER);//добавляем эту карту в базу
+        newPlayerCard.setWhose(Holder.PLAYER);
+        firstCards.add(newPlayerCard);
+
+        usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
+        newDialerCard = cardPack.nextCard(usedCards);
+        tableGameDao.addCard(newDialerCard, tableId, Holder.DIALER);//добавляем эту карту в базу
+        newDialerCard.setWhose(Holder.DIALER);
+        firstCards.add(newDialerCard);
+
+        if (playerSum == 21){
+            //player won
+        }
+        System.out.println(playerSum);
+
+        return firstCards;
+    }
 
     /*
       * Returns the next card for this holder at this table. Return null if player has too many cards
      */
-    public Card getCard(Holder holder, long tableId) throws AllCardsWereUsedException {
+    public Card getPlayerCard(long tableId) throws AllCardsWereUsedException {
         List<Card> usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
-        List<Card> holderCards = getHolderCards(holder, usedCards);
         //System.out.println(holderCards);
-        //берем карты игрока или дилераиз базы
 
-        int cardSum = calculateCardsSum(holderCards);
-        //System.out.println(holder + "'s sum = " + cardSum);
-        Card card = null;   
+        Card newCard = cardPack.nextCard(usedCards);
+        tableGameDao.addCard(newCard, tableId, Holder.PLAYER);//добавляем эту карту в базу
+
+        List<Card> playerCards = getHolderCards(Holder.PLAYER, usedCards);
+        playerCards.add(newCard);
+        int cardSum = calculateCardsSum(playerCards);
+        System.out.println(Holder.PLAYER + "'s sum = " + cardSum);
         if (cardSum < MAX_SUM) {
-            card = cardPack.nextCard(usedCards);
-            tableGameDao.addCard(card, tableId, holder);//добавляем эту карту в базу
+            return newCard;
         }
-
-        return card;
+        else if (cardSum ==  MAX_SUM){
+            System.out.println("Player won");
+            //player won
+            return null;
+        }
+        else { //cardSum > MAX_SUM
+            System.out.println("Player lost");
+            //playerLost
+            return null;
+        }
     }
 
     private List<Card> getHolderCards(Holder holder, List<Card> usedCards) {
@@ -74,7 +134,7 @@ public class TableGameService {
             sumOfCards += card.getCardType().getValue();
         }
 
-        if (sumOfCards >= MAX_SUM) { // if some too much ACE's are counted as 1(if holder have them, otherwise he lose)
+        if (sumOfCards > MAX_SUM) { // if some too much ACE's are counted as 1(if holder have them, otherwise he lose)
             int numberOfAces = 0;
             for (Card card : holderCards){
                 if (card.getCardType().equals(CardType.ACE)){
@@ -95,7 +155,12 @@ public class TableGameService {
         TableGameDao tableGameDao = new TableGameDaoImpl(entityManagerFactory);
         TableGameService tableService = new TableGameService(tableGameDao);
         try {
-            System.out.println(tableService.getCard(Holder.DIALER, 1L));
+            System.out.println(tableService.startFirstRound(1L));
+            Card card = null;
+            while ((card = tableService.getPlayerCard(1L)) != null){
+                System.out.println(card);
+            }
+            //System.out.println(tableService.getPlayerCard(1L));
         } catch (BlackJackException e) {
             e.printStackTrace();
         }

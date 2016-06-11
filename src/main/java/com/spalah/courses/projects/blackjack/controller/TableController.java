@@ -22,25 +22,37 @@ public class TableController {
     @Autowired
     TableService tableService;
 
-    @RequestMapping(value = "/account/{login}/select-table",
+    @RequestMapping(
+            value = "/account/{login}/select-table",
             method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseBody
     public List<TableType> getTableType(@PathVariable String login) {
         return tableService.getTableTypesVariants();
     }
 
-    @RequestMapping(value = "/account/{login}/table",
+    @RequestMapping(
+            value = "/account/{login}/table",
             method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ResponseBody
     public TableCreateResponse getTableType(
             @Valid @RequestBody FormCreateTable formCreateTable,
-            @PathVariable String login)
-            throws AccountException {
-
+            @PathVariable String login
+    ) throws AccountException {
         Long tableTypeId = formCreateTable.getTableTypeId();
         Table table = tableService.createTable(tableTypeId, login);
         return new TableCreateResponse(table);
+    }
+
+    @RequestMapping(
+            value = "/account/{login}/table/{tableID}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public void getAvailCommands() {
+
     }
 }
