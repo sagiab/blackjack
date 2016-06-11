@@ -20,10 +20,6 @@ public class TableType {
     @Column(name = "max_bet")
     private int maxBetSize;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, mappedBy = "type")
-    private List<Table> tablesWithThisType = null;
-
-
     public long getId() {
         return id;
     }
@@ -46,14 +42,6 @@ public class TableType {
 
     public void setMaxBetSize(int maxBetSize) {
         this.maxBetSize = maxBetSize;
-    }
-
-    public List<Table> getTablesWithThisType() {
-        return tablesWithThisType;
-    }
-
-    public void setTablesWithThisType(List<Table> tablesWithThisType) {
-        this.tablesWithThisType = tablesWithThisType;
     }
 
     @Override

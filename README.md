@@ -31,15 +31,14 @@
 
     ```json
 
-        URL: /account/{login}
-        TYPE: GET
+        URL: /account/login
+        TYPE: POST
         BODY: NONE
         EFFECT: User info like login, nickname, balance
         RESPONSE: JSON
             {
-                "login": "your_login",
-                "nickName": "your_nickname",
-                "balance": 10000
+                "login": "login",
+                "password": "password"
             }
             
     ```
@@ -66,16 +65,14 @@
         BODY: NONE
         EFFECT: Gets the available tables types
         RESPONSE:  JSON
-            {
-                "tabletypes": [
-                   {
-                       "id": 1
-                       "minBet": 1,
-                       "maxBet": 100
-                   },
-                   ...
-                   ]
-            }
+            [
+                {
+                    "id": 1,
+                    "minBetSize": 10,
+                    "maxBetSize": 100
+                },
+                ...
+            ]
        
     ```
 
@@ -90,9 +87,7 @@
         EFFECT: Create new table by tabletype for user by login
         RESPONSE:  JSON
             {
-                "status": 0 or -1,     
-                "message": "status message",
-                "tableID": 4623
+                "tableId": 7
             }
        
     ```

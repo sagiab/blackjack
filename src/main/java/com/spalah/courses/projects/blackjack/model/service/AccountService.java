@@ -26,6 +26,16 @@ public class AccountService {
         this.accountDao = accountDao;
     }
 
+    public Account getAccount(String login) throws AccountException {
+        Account account;
+        try {
+            account = accountDao.getAccount(login);
+        } catch (NoResultException e) {
+            throw new AccountException("Login incorrect");
+        }
+        return account;
+    }
+
     public Account getAccount(String login, String password) throws AccountException {
         Account account;
         try {

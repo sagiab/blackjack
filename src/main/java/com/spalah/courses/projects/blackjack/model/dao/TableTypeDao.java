@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface TableTypeDao {
     List<TableType> getTableTypesVariants();
+
+    TableType getTableTypeById(Long id);
 }
