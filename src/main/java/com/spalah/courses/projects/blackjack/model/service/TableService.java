@@ -1,16 +1,17 @@
 package com.spalah.courses.projects.blackjack.model.service;
 
 import com.spalah.courses.projects.blackjack.exception.AccountException;
+import com.spalah.courses.projects.blackjack.exception.BetOutOfTypeRange;
+import com.spalah.courses.projects.blackjack.model.dao.BetDao;
 import com.spalah.courses.projects.blackjack.model.dao.TableDao;
 import com.spalah.courses.projects.blackjack.model.dao.TableTypeDao;
 import com.spalah.courses.projects.blackjack.model.domain.account.Account;
 import com.spalah.courses.projects.blackjack.model.domain.bet.Bet;
-import com.spalah.courses.projects.blackjack.model.domain.cards.Card;
-import com.spalah.courses.projects.blackjack.model.domain.cards.CardColor;
-import com.spalah.courses.projects.blackjack.model.domain.cards.CardType;
-import com.spalah.courses.projects.blackjack.model.domain.table.Holder;
+import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.Card;
+import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.CardColor;
+import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.CardType;
+import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.Holder;
 import com.spalah.courses.projects.blackjack.model.domain.table.Table;
-import com.spalah.courses.projects.blackjack.model.domain.table.TableBetRange;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableGame;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,14 @@ public class TableService {
     private TableDao tableDao;
     private TableTypeDao tableTypeDao;
 
+    //no dependency injection !!!!!
+    private BetDao betDao;
 
-    public TableService(TableDao tableDao, TableTypeDao tableTypeDao) {
+
+    public TableService(TableDao tableDao, TableTypeDao tableTypeDao, BetDao betDao) {
         this.tableDao = tableDao;
         this.tableTypeDao = tableTypeDao;
+        this.betDao = betDao;
     }
 
     public List<TableType> getTableTypesVariants() {
@@ -52,14 +57,17 @@ public class TableService {
         Make player's bet for specific table
         return Bet which was accepted and null if bet < min table type's bet size or bet > max table type's bet size
      */
-    /*public Bet makeBet(int betSize, long tableId){
-        TableBetRange tableBetRange = tableDao.getTableBetRange(tableId);
-        if (betSize >= tableBetRange.getMinBet() && betSize <= tableBetRange.getMaxBet()){
-            Bet bet = new Bet();
-            bet.setTable();
-            betDao.addBe
+    public Bet deal(int betSize, long tableId) throws BetOutOfTypeRange {
+        TableType tableType = tableDao.getTable(tableId).getType();
+        int minBet = tableType.getMinBetSize();
+        int maxBet = tableType.getMinBetSize();
+        Bet bet = null;
+        if (betSize >= minBet && betSize <= maxBet){
+            bet = betDao.addBet(tableDao.getTable(tableId), betSize);
+            return bet;
         }
-    }*/
+        throw new BetOutOfTypeRange("Bet should be between " + minBet + " and " + maxBet);
+    }
 
     public List<Card> getUsedCards(long tableId) {
         List<TableGame> steps = tableDao.getSteps(tableId);

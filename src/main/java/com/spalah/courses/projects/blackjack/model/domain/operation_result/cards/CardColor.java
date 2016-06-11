@@ -1,4 +1,4 @@
-package com.spalah.courses.projects.blackjack.model.domain.cards;
+package com.spalah.courses.projects.blackjack.model.domain.operation_result.cards;
 
 /**
  * @author Denis Loshkarev on 03.06.2016.

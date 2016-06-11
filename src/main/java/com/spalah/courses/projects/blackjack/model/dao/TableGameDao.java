@@ -1,7 +1,6 @@
 package com.spalah.courses.projects.blackjack.model.dao;
 
-import com.spalah.courses.projects.blackjack.model.domain.cards.Card;
-import com.spalah.courses.projects.blackjack.model.domain.table.Holder;
+import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.Card;
 
 import java.util.List;
 /**

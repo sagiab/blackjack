@@ -4,15 +4,24 @@ import com.spalah.courses.projects.blackjack.exception.AccountException;
 import com.spalah.courses.projects.blackjack.exception.AllCardsWereUsedException;
 import com.spalah.courses.projects.blackjack.exception.BlackJackException;
 import com.spalah.courses.projects.blackjack.exception.TableException;
+import com.spalah.courses.projects.blackjack.model.dao.BetDao;
+import com.spalah.courses.projects.blackjack.model.dao.TableDao;
 import com.spalah.courses.projects.blackjack.model.dao.TableGameDao;
+import com.spalah.courses.projects.blackjack.model.dao.TableTypeDao;
+import com.spalah.courses.projects.blackjack.model.dao.impl.BetDaoImpl;
+import com.spalah.courses.projects.blackjack.model.dao.impl.TableDaoImpl;
 import com.spalah.courses.projects.blackjack.model.dao.impl.TableGameDaoImpl;
+import com.spalah.courses.projects.blackjack.model.dao.impl.TableTypeDaoImpl;
 import com.spalah.courses.projects.blackjack.model.domain.account.Account;
-import com.spalah.courses.projects.blackjack.model.domain.cards.Card;
-import com.spalah.courses.projects.blackjack.model.domain.cards.CardPack;
-import com.spalah.courses.projects.blackjack.model.domain.cards.CardType;
 import com.spalah.courses.projects.blackjack.model.domain.commands.Command;
 import com.spalah.courses.projects.blackjack.model.domain.commands.CommandType;
-import com.spalah.courses.projects.blackjack.model.domain.table.Holder;
+import com.spalah.courses.projects.blackjack.model.domain.operation_result.Resultable;
+import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.Card;
+import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.CardPack;
+import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.CardType;
+import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.Holder;
+import com.spalah.courses.projects.blackjack.model.domain.operation_result.game_ower.GameOver;
+import com.spalah.courses.projects.blackjack.model.domain.operation_result.game_ower.Winner;
 import com.spalah.courses.projects.blackjack.model.domain.table.Table;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,6 +45,14 @@ public class TableGameService {
 
 
     public TableGameService(TableGameDao tableGameDao) {
+        /******КОММЕНТИРУЙ ПОКА ДЛЯ СЕБЯ ЭТОТ БЛОК*******************/
+        String PERSISTENCE_UNIT = "com.spalah.courses.projects.blackjack";
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
+        TableDao tableDao = new TableDaoImpl(entityManagerFactory);
+        TableTypeDao tableTypeDao = new TableTypeDaoImpl(entityManagerFactory);
+        BetDao betDao = new BetDaoImpl(entityManagerFactory);
+        tableService = new TableService(tableDao, tableTypeDao, betDao);
+        /******************************************************/
         this.tableGameDao = tableGameDao;
         cardPack = new CardPack();
     }
@@ -47,11 +64,12 @@ public class TableGameService {
         TableGameService tableService = new TableGameService(tableGameDao);
         try {
             System.out.println(tableService.startFirstRound(1L));
-            Card card = null;
-            while ((card = tableService.getPlayerCard(1L)) != null) {
-                System.out.println(card);
+            Resultable result = null;
+            while (!((result = tableService.hit(1L)) instanceof GameOver)) {
+                System.out.println(result.printResult());
             }
-            //System.out.println(tableService.getPlayerCard(1L));
+            System.out.println(result.printResult());
+            //System.out.println(tableService.hit(1L));
         } catch (BlackJackException e) {
             e.printStackTrace();
         }
@@ -126,9 +144,8 @@ public class TableGameService {
     /*
       * Returns the next card for this holder at this table. Return null if player has too many cards
      */
-    public Card getPlayerCard(long tableId) throws AllCardsWereUsedException {
+    public Resultable hit(long tableId) throws AllCardsWereUsedException {
         List<Card> usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
-        //System.out.println(holderCards);
 
         Card newCard = cardPack.nextCard(usedCards);
         newCard.setWhose(Holder.PLAYER);
@@ -136,19 +153,21 @@ public class TableGameService {
 
         List<Card> playerCards = getHolderCards(Holder.PLAYER, usedCards);
         playerCards.add(newCard);
-        int cardSum = calculateCardsSum(playerCards);
-        System.out.println(Holder.PLAYER + "'s sum = " + cardSum);
-        if (cardSum < MAX_SUM) {
+        int playerSum = calculateCardsSum(playerCards);
+        System.out.println(Holder.PLAYER + "'s sum = " + playerSum);
+        if (playerSum < MAX_SUM) {
             return newCard;
-        } else if (cardSum == MAX_SUM) {
-            System.out.println("Player won");
-            //player won
-            return null;
+        } else if (playerSum == MAX_SUM) {
+            return summarizeResults(Winner.PLAYER, usedCards, playerCards, playerSum);
         } else { //cardSum > MAX_SUM
-            System.out.println("Player lost");
-            //playerLost
-            return null;
+            return summarizeResults(Winner.DIALER, usedCards, playerCards, playerSum);
         }
+    }
+
+    private GameOver summarizeResults(Winner winner, List<Card> usedCards, List<Card> playerCards, int playerSum){
+        List<Card> dealerCards = getHolderCards(Holder.DIALER, usedCards);
+        int dealerSum = calculateCardsSum(dealerCards);
+        return new GameOver(winner, dealerCards, dealerSum, playerCards, playerSum);
     }
 
     private List<Card> getHolderCards(Holder holder, List<Card> usedCards) {

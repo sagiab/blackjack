@@ -1,4 +1,4 @@
-package com.spalah.courses.projects.blackjack.model.domain.cards;
+package com.spalah.courses.projects.blackjack.model.domain.operation_result.cards;
 
 
 import com.spalah.courses.projects.blackjack.exception.AllCardsWereUsedException;
