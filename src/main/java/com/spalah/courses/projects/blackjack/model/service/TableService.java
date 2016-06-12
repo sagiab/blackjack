@@ -33,14 +33,12 @@ import java.util.List;
 public class TableService {
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private TableGameService tableGameService;
+
     private TableDao tableDao;
     private TableTypeDao tableTypeDao;
-
-    //no dependency injection !!!!!
     private BetDao betDao;
-
-    //need to be autowired!!!!!!!
-    private TableGameService tableGameService;
 
 
     public TableService(TableDao tableDao, TableTypeDao tableTypeDao, BetDao betDao) {
@@ -49,7 +47,7 @@ public class TableService {
         this.betDao = betDao;
     }
 
-    public TableService(){
+    public TableService() {
         String PERSISTENCE_UNIT = "com.spalah.courses.projects.blackjack";
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
         TableDao tableDao = new TableDaoImpl(entityManagerFactory);
@@ -60,6 +58,26 @@ public class TableService {
         this.betDao = betDao;
         tableGameService = new TableGameService();
         accountService = new AccountService();
+    }
+
+    public static void main(String[] args) {
+        TableService tableService = new TableService();
+        try {
+            tableService.deal("Den@Den", 500, 1);
+
+            TableGameService tableGameService = new TableGameService();
+            Resultable result = null;
+            while (!((result = tableGameService.hit(1L)) instanceof GameOver)) {
+                System.out.println(result.printResult());
+            }
+            System.out.println(result.printResult());
+        } catch (BetOutOfTypeRange betOutOfTypeRange) {
+            betOutOfTypeRange.printStackTrace();
+        } catch (AccountException e) {
+            e.printStackTrace();
+        } catch (AllCardsWereUsedException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<TableType> getTableTypesVariants() {
@@ -84,9 +102,9 @@ public class TableService {
         TableType tableType = tableDao.getTable(tableId).getType();
         int minBet = tableType.getMinBetSize();
         int maxBet = tableType.getMaxBetSize();
-        if (betSize >= minBet && betSize <= maxBet){
+        if (betSize >= minBet && betSize <= maxBet) {
             //subtract betSize from playerBalance
-            int updateSum = - betSize;
+            int updateSum = -betSize;
             accountService.updateAccountBalance(login, updateSum);
             Bet bet = betDao.addBet(tableDao.getTable(tableId), betSize);
             tableGameService.startFirstRound(tableId);
@@ -100,7 +118,7 @@ public class TableService {
 
         //get Cards from steps list, which are written as "<CardType><.><CardColor>'
         List<Card> usedCards = new ArrayList<>();
-        for (TableGame tableGame : steps){
+        for (TableGame tableGame : steps) {
             Holder whoseCard = Holder.valueOf(tableGame.getCardsHolder());
             String cardStr = tableGame.getCards();
             String[] cardParts = cardStr.split("\\."); //экранирование точки
@@ -114,26 +132,6 @@ public class TableService {
 
     public TableGameService getTableGameService() {
         return tableGameService;
-    }
-
-    public static void main(String[] args) {
-        TableService tableService = new TableService();
-        try {
-            tableService.deal("Den@Den", 500, 1);
-
-            TableGameService tableGameService = new TableGameService();
-            Resultable result = null;
-            while (!((result = tableGameService.hit(1L)) instanceof GameOver)) {
-                System.out.println(result.printResult());
-            }
-            System.out.println(result.printResult());
-        } catch (BetOutOfTypeRange betOutOfTypeRange) {
-            betOutOfTypeRange.printStackTrace();
-        } catch (AccountException e) {
-            e.printStackTrace();
-        } catch (AllCardsWereUsedException e) {
-            e.printStackTrace();
-        }
     }
 
 

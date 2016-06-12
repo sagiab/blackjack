@@ -21,6 +21,7 @@
           class="com.spalah.courses.projects.blackjack.model.service.TableService">
         <constructor-arg ref="tableDao"/>
         <constructor-arg ref="tableTypeDao"/>
+        <constructor-arg ref="betDao"/>
     </bean>
 
     <bean id="tableGameService"
@@ -41,6 +42,11 @@
 
     <bean id="tableTypeDao"
           class="com.spalah.courses.projects.blackjack.model.dao.impl.TableTypeDaoImpl">
+        <constructor-arg ref="entityManagerFactory" />
+    </bean>
+
+    <bean id="betDao"
+          class="com.spalah.courses.projects.blackjack.model.dao.impl.BetDaoImpl">
         <constructor-arg ref="entityManagerFactory" />
     </bean>
 
