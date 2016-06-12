@@ -11,6 +11,7 @@ import javax.persistence.EntityManagerFactory;
  * Created by Dima on 12.06.2016.
  */
 public class BetDaoImpl implements BetDao {
+    private static final String SQL_GET_BET_BY_TABLE_ID = "FROM Bet where table_id = :tableId";
     private EntityManagerFactory entityManagerFactory;
 
     public BetDaoImpl(EntityManagerFactory entityManagerFactory) {
@@ -18,30 +19,34 @@ public class BetDaoImpl implements BetDao {
     }
 
     @Override
-    public Bet addBet(Table table, int betSize) {
+    public void addBet(Long tableId, int betSize) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
 
         Bet bet = new Bet();
-        bet.setTable(table);
+        bet.setTableId(tableId);
         bet.setBetSize(betSize);
 
         entityManager.persist(bet);
         entityManager.getTransaction().commit();
-
-        return bet;
     }
 
     @Override
     public Bet getBet(long tableId) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        entityManager.getTransaction().begin();
-
-        Bet bet = entityManager.createQuery("FROM Bet where tableId =:tableId", Bet.class)
+        Bet bet = entityManager.createQuery(SQL_GET_BET_BY_TABLE_ID, Bet.class)
                 .setParameter("tableId", tableId).getSingleResult();
+        return bet;
+    }
 
+    @Override
+    public Bet deleteBet(long tableId) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        Bet bet = entityManager.createQuery(SQL_GET_BET_BY_TABLE_ID, Bet.class)
+                .setParameter("tableId", tableId).getSingleResult();
+        entityManager.remove(bet);
         entityManager.getTransaction().commit();
-
         return bet;
     }
 }

@@ -1,13 +1,10 @@
 package com.spalah.courses.projects.blackjack.controller;
 
 import com.spalah.courses.projects.blackjack.exception.AccountException;
-import com.spalah.courses.projects.blackjack.exception.TableException;
-import com.spalah.courses.projects.blackjack.model.domain.commands.Command;
 import com.spalah.courses.projects.blackjack.model.domain.response.TableCreateResponse;
 import com.spalah.courses.projects.blackjack.model.domain.table.FormCreateTable;
 import com.spalah.courses.projects.blackjack.model.domain.table.Table;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableType;
-import com.spalah.courses.projects.blackjack.model.service.TableGameService;
 import com.spalah.courses.projects.blackjack.model.service.TableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,8 +21,6 @@ import java.util.List;
 public class TableController {
     @Autowired
     TableService tableService;
-    @Autowired
-    TableGameService tableGameService;
 
     @RequestMapping(
             value = "/account/{login}/select-table",
@@ -50,18 +45,5 @@ public class TableController {
         Long tableTypeId = formCreateTable.getTableTypeId();
         Table table = tableService.createTable(tableTypeId, login);
         return new TableCreateResponse(table);
-    }
-
-    @RequestMapping(
-            value = "/account/{login}/table/{tableId}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    @ResponseBody
-    public List<Command> getAvailCommands(
-            @PathVariable String login,
-            @PathVariable Long tableId
-    ) throws AccountException, TableException {
-        return tableGameService.getAvailCommands(login, tableId);
     }
 }

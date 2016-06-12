@@ -7,6 +7,9 @@ import com.spalah.courses.projects.blackjack.model.domain.table.Table;
  * Created by Dima on 12.06.2016.
  */
 public interface BetDao {
-    Bet addBet(Table table, int betSize);
+    void addBet(Long tableId, int betSize);
+
     Bet getBet(long tableId);
+
+    Bet deleteBet(long tableId);
 }

@@ -19,7 +19,6 @@ public class ExceptionController {
     @ResponseBody
     public StatusMessage accountException(AccountException e) {
         StatusMessage statusMessage = new StatusMessage().error(e);
-        statusMessage.add(e.getObject());
         return statusMessage;
     }
 
@@ -47,6 +46,7 @@ public class ExceptionController {
 //            Query q = manager.createNativeQuery("BEGIN " + sqlScript + " END;");
 //            q.executeUpdate();
         }
+        e.printStackTrace();
         return new StatusMessage().error(e);
     }
 }

@@ -2,6 +2,7 @@ package com.spalah.courses.projects.blackjack.model.dao.impl;
 
 import com.spalah.courses.projects.blackjack.model.dao.AccountDao;
 import com.spalah.courses.projects.blackjack.model.domain.account.Account;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,6 +15,7 @@ import java.util.List;
  */
 public class AccountDaoImpl implements AccountDao {
     private static final String GET_ALL_ACCOUNTS = "FROM Account";
+    @Autowired
     private EntityManagerFactory entityManagerFactory;
 
     public AccountDaoImpl(EntityManagerFactory entityManagerFactory) {

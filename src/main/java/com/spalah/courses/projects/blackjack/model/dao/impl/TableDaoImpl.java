@@ -2,45 +2,28 @@ package com.spalah.courses.projects.blackjack.model.dao.impl;
 
 import com.spalah.courses.projects.blackjack.model.dao.TableDao;
 import com.spalah.courses.projects.blackjack.model.domain.account.Account;
-import com.spalah.courses.projects.blackjack.model.domain.bet.Bet;
 import com.spalah.courses.projects.blackjack.model.domain.table.Table;
-import com.spalah.courses.projects.blackjack.model.domain.table.TableBetRange;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableGame;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableType;
-import javafx.scene.control.Tab;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.List;
 
 /**
  * Created by Dima on 09.06.2016.
  */
 public class TableDaoImpl implements TableDao {
+    private static final String SQL_GET_TABLE_BY_TABLE_ID =
+            "FROM Table t JOIN FETCH t.type tt JOIN FETCH t.player tp " +
+                    "where t.tableId = :id";
+    private static final String SQL_GET_STEPS_BY_TABLE_ID =
+            "FROM TableGame tg JOIN FETCH tg.bet tgb " +
+                    "where tgb.tableId = :tableId";
     private EntityManagerFactory entityManagerFactory;
 
     public TableDaoImpl(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
-    }
-
-    public static void main(String[] args) {
-        String PERSISTENCE_UNIT = "com.spalah.courses.projects.blackjack";
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
-        TableDao tableDao = new TableDaoImpl(entityManagerFactory);
-        testGetUsedCards(tableDao);
-    }
-
-    public static void testCreateTable(TableDao tableDao) {
-        TableType tableType = new TableType();
-        tableType.setId(1);
-        Account account = new Account();
-        account.setId(2L);
-        System.out.println(tableDao.createTable(tableType, account));
-    }
-
-    public static void testGetUsedCards(TableDao tableDao) {
-        tableDao.getSteps(1);
     }
 
     @Override
@@ -61,7 +44,7 @@ public class TableDaoImpl implements TableDao {
     @Override
     public Table getTable(long tableId) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        return entityManager.createQuery("FROM Table where tableId = :id", Table.class)
+        return entityManager.createQuery(SQL_GET_TABLE_BY_TABLE_ID, Table.class)
                 .setParameter("id", tableId)
                 .getSingleResult();
     }
@@ -74,15 +57,8 @@ public class TableDaoImpl implements TableDao {
     @Override
     public List<TableGame> getSteps(long tableId) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        //get table with id
-        Table table = entityManager.createQuery("FROM Table where tableId = :id", Table.class)
-                .setParameter("id", tableId)
-                .getSingleResult();
-        Bet bet = table.getBets().get(0); // только один Bet на table
-        //get all steps for this bet
-
-        return entityManager.createQuery("FROM TableGame where bet.betId = :betId", TableGame.class)
-                .setParameter("betId", bet.getBetId())
+        return entityManager.createQuery(SQL_GET_STEPS_BY_TABLE_ID, TableGame.class)
+                .setParameter("tableId", tableId)
                 .getResultList();
     }
 }

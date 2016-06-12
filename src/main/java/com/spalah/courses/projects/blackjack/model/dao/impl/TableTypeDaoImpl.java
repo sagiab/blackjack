@@ -5,7 +5,6 @@ import com.spalah.courses.projects.blackjack.model.domain.table.TableType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.List;
 
 /**
@@ -18,13 +17,6 @@ public class TableTypeDaoImpl implements TableTypeDao {
 
     public TableTypeDaoImpl(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
-    }
-
-    public static void main(String[] args) {
-        String PERSISTENCE_UNIT = "com.spalah.courses.projects.blackjack";
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
-        TableTypeDao tableTypeDao = new TableTypeDaoImpl(entityManagerFactory);
-        System.out.println(tableTypeDao.getTableTypesVariants());
     }
 
     @Override

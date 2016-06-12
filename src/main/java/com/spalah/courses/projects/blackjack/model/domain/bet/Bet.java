@@ -2,6 +2,7 @@ package com.spalah.courses.projects.blackjack.model.domain.bet;
 
 import com.spalah.courses.projects.blackjack.model.domain.table.Table;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableGame;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
 import java.util.*;
@@ -17,15 +18,11 @@ public class Bet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long betId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "table_id")
-    private Table table;
+    @Column(name = "table_id")
+    private long tableId;
 
     @Column(name = "bet_size")
     private int betSize;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "bet")
-    private List<TableGame> steps;
 
     public long getBetId() {
         return betId;
@@ -35,12 +32,12 @@ public class Bet {
         this.betId = betId;
     }
 
-    public Table getTable() {
-        return table;
+    public long getTableId() {
+        return tableId;
     }
 
-    public void setTable(Table table) {
-        this.table = table;
+    public void setTableId(long tableId) {
+        this.tableId = tableId;
     }
 
     public int getBetSize() {
@@ -49,5 +46,14 @@ public class Bet {
 
     public void setBetSize(int betSize) {
         this.betSize = betSize;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("betId", betId)
+                .append("table", tableId)
+                .append("betSize", betSize)
+                .toString();
     }
 }

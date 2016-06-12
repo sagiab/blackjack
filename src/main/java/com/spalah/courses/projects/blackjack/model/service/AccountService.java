@@ -2,13 +2,12 @@ package com.spalah.courses.projects.blackjack.model.service;
 
 import com.spalah.courses.projects.blackjack.exception.AccountException;
 import com.spalah.courses.projects.blackjack.model.dao.AccountDao;
-import com.spalah.courses.projects.blackjack.model.dao.impl.AccountDaoImpl;
 import com.spalah.courses.projects.blackjack.model.domain.account.Account;
+import com.spalah.courses.projects.blackjack.model.domain.table.Table;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
 import java.util.List;
 
 /**
@@ -16,16 +15,10 @@ import java.util.List;
  */
 public class AccountService {
     private static final Long STARTED_BALANCE = 10000L;
+    @Autowired
     private AccountDao accountDao;
 
-    public AccountService(AccountDao accountDao) {
-        this.accountDao = accountDao;
-    }
-    public AccountService(){
-        String PERSISTENCE_UNIT = "com.spalah.courses.projects.blackjack";
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
-        AccountDao accountDao = new AccountDaoImpl(entityManagerFactory);
-        this.accountDao = accountDao;
+    public AccountService() {
     }
 
     public Account getAccount(String login) throws AccountException {
@@ -71,17 +64,14 @@ public class AccountService {
     /*
     @return >0 if balance was succesfully updated or -1 if not enough balance on account
      */
-    public double updateAccountBalance(String login, double updateSum) throws AccountException {
-        try {
-            Account account = getAccount(login);
-            double updatedBalance = -1;
-            if ((updateSum < 0 && account.getBalance() + updateSum >= 0) || updateSum >= 0) {
-                updatedBalance = account.getBalance() + updateSum;
-                accountDao.setBalance(login, updatedBalance);
-            }
-            return  updatedBalance;
-        } catch (AccountException e) {
-            throw new AccountException("Login incorrect");
+    public double updateAccountBalance(Account account, double updateSum) throws AccountException {
+        Double updatedBalance;
+        if ((updateSum < 0 && account.getBalance() + updateSum >= 0) || updateSum >= 0) {
+            updatedBalance = account.getBalance() + updateSum;
+            accountDao.setBalance(account.getLogin(), updatedBalance);
+            return updatedBalance;
+        } else {
+            throw new AccountException("Bet is bigger than your balance");
         }
     }
 
@@ -91,14 +81,5 @@ public class AccountService {
             if (a.getLogin().equals(account.getLogin())) throw new AccountException("This login is already busy.");
         }
         return true;
-    }
-
-    public static void main(String[] args){
-        AccountService accountService = new AccountService();
-        try {
-            System.out.println(accountService.updateAccountBalance("Den@Den", -10001));
-        } catch (AccountException e) {
-            e.printStackTrace();
-        }
     }
 }

@@ -1,5 +1,7 @@
 package com.spalah.courses.projects.blackjack.model.domain.account;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
@@ -75,5 +77,33 @@ public class Account {
                 .append("balance", balance)
                 .append("pass", password)
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Account account = (Account) o;
+
+        return new EqualsBuilder()
+                .append(balance, account.balance)
+                .append(id, account.id)
+                .append(login, account.login)
+                .append(nickName, account.nickName)
+                .append(password, account.password)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(id)
+                .append(login)
+                .append(nickName)
+                .append(balance)
+                .append(password)
+                .toHashCode();
     }
 }
