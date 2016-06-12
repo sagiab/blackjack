@@ -3,7 +3,6 @@ package com.spalah.courses.projects.blackjack.model.service;
 import com.spalah.courses.projects.blackjack.exception.AccountException;
 import com.spalah.courses.projects.blackjack.model.dao.AccountDao;
 import com.spalah.courses.projects.blackjack.model.domain.account.Account;
-import com.spalah.courses.projects.blackjack.model.domain.table.Table;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 

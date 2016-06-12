@@ -13,7 +13,7 @@ public class Card implements Resultable {
     private CardType cardType;
     private Holder whose; // show who own this card: player, dialer or none
 
-    public Card(CardColor cardColor, CardType cardType, Holder whose){
+    public Card(CardColor cardColor, CardType cardType, Holder whose) {
         this.cardColor = cardColor;
         this.cardType = cardType;
         this.whose = whose;
@@ -36,7 +36,7 @@ public class Card implements Resultable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(cardColor,cardType);
+        return Objects.hash(cardColor, cardType);
     }
 
     @Override
@@ -64,6 +64,6 @@ public class Card implements Resultable {
 
     @Override
     public String printResult() {
-        return  getWhose() + " got card: " + toString();
+        return getWhose() + " got card: " + toString();
     }
 }

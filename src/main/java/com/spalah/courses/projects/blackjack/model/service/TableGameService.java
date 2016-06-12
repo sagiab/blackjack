@@ -160,8 +160,7 @@ public class TableGameService {
             throw new BetOutOfTypeRange("Bet should be between " + minBet + " and " + maxBet);
         } else if (bet != null) {
             throw new BetOutOfTypeRange("You already have one bet ");
-        }
-        else return true;
+        } else return true;
     }
 
     public Bet deleteBet(String login, long tableId) throws AccountException, TableException {

@@ -12,11 +12,11 @@ public enum CardType {
         value = i;
     }
 
-    public int getValue() {
-        return value;
-    }
-
     public static void main(String[] args) {
         System.out.println(CardType.TWO.getValue());
+    }
+
+    public int getValue() {
+        return value;
     }
 }

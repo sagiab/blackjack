@@ -1,29 +1,18 @@
 package com.spalah.courses.projects.blackjack.model.service;
 
 import com.spalah.courses.projects.blackjack.exception.AccountException;
-import com.spalah.courses.projects.blackjack.exception.AllCardsWereUsedException;
-import com.spalah.courses.projects.blackjack.exception.BetOutOfTypeRange;
-import com.spalah.courses.projects.blackjack.model.dao.BetDao;
 import com.spalah.courses.projects.blackjack.model.dao.TableDao;
 import com.spalah.courses.projects.blackjack.model.dao.TableTypeDao;
-import com.spalah.courses.projects.blackjack.model.dao.impl.BetDaoImpl;
-import com.spalah.courses.projects.blackjack.model.dao.impl.TableDaoImpl;
-import com.spalah.courses.projects.blackjack.model.dao.impl.TableTypeDaoImpl;
 import com.spalah.courses.projects.blackjack.model.domain.account.Account;
-import com.spalah.courses.projects.blackjack.model.domain.bet.Bet;
-import com.spalah.courses.projects.blackjack.model.domain.operation_result.Resultable;
 import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.Card;
 import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.CardColor;
 import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.CardType;
 import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.Holder;
-import com.spalah.courses.projects.blackjack.model.domain.operation_result.game_ower.GameOver;
 import com.spalah.courses.projects.blackjack.model.domain.table.Table;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableGame;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableType;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.util.ArrayList;
 import java.util.List;
 

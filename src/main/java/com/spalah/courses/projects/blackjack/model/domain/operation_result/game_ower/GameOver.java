@@ -11,7 +11,7 @@ import java.util.List;
 public class GameOver implements Resultable {
     private Winner winner;
 
-    private List<Card > dealerCards;
+    private List<Card> dealerCards;
     private List<Card> playerCards;
 
     private int playerSum;

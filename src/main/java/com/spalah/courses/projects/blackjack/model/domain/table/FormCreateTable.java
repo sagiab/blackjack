@@ -1,7 +1,5 @@
 package com.spalah.courses.projects.blackjack.model.domain.table;
 
-import javax.validation.constraints.Min;
-
 /**
  * @author Denis Loshkarev on 10.06.2016.
  */

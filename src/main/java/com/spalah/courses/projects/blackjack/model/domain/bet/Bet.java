@@ -1,11 +1,8 @@
 package com.spalah.courses.projects.blackjack.model.domain.bet;
 
-import com.spalah.courses.projects.blackjack.model.domain.table.Table;
-import com.spalah.courses.projects.blackjack.model.domain.table.TableGame;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
-import java.util.*;
 
 /**
  * Created by Dima on 08.06.2016.

@@ -2,7 +2,6 @@ package com.spalah.courses.projects.blackjack.model.dao.impl;
 
 import com.spalah.courses.projects.blackjack.model.dao.BetDao;
 import com.spalah.courses.projects.blackjack.model.domain.bet.Bet;
-import com.spalah.courses.projects.blackjack.model.domain.table.Table;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
