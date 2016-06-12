@@ -19,7 +19,7 @@ public class Account {
     @Column(name = "nickname")
     private String nickName;
     @Column(name = "balance")
-    private Long balance;
+    private double balance;
     @Column(name = "password")
     private String password;
 
@@ -50,11 +50,11 @@ public class Account {
         this.nickName = nickName;
     }
 
-    public Long getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(Long balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 

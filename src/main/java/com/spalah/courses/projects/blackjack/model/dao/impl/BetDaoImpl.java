@@ -31,4 +31,17 @@ public class BetDaoImpl implements BetDao {
 
         return bet;
     }
+
+    @Override
+    public Bet getBet(long tableId) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+
+        Bet bet = entityManager.createQuery("FROM Bet where tableId =:tableId", Bet.class)
+                .setParameter("tableId", tableId).getSingleResult();
+
+        entityManager.getTransaction().commit();
+
+        return bet;
+    }
 }

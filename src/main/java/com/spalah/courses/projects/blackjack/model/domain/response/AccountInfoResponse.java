@@ -7,7 +7,7 @@ import com.spalah.courses.projects.blackjack.model.domain.account.Account;
  */
 public class AccountInfoResponse {
     private String nickName;
-    private Long balance;
+    private Double balance;
 
     public AccountInfoResponse(Account account) {
         this.nickName = account.getNickName();
@@ -22,11 +22,11 @@ public class AccountInfoResponse {
         this.nickName = nickName;
     }
 
-    public Long getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(Long balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 }

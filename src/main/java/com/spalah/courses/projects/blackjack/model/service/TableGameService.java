@@ -13,6 +13,7 @@ import com.spalah.courses.projects.blackjack.model.dao.impl.TableDaoImpl;
 import com.spalah.courses.projects.blackjack.model.dao.impl.TableGameDaoImpl;
 import com.spalah.courses.projects.blackjack.model.dao.impl.TableTypeDaoImpl;
 import com.spalah.courses.projects.blackjack.model.domain.account.Account;
+import com.spalah.courses.projects.blackjack.model.domain.bet.Bet;
 import com.spalah.courses.projects.blackjack.model.domain.commands.Command;
 import com.spalah.courses.projects.blackjack.model.domain.commands.CommandType;
 import com.spalah.courses.projects.blackjack.model.domain.operation_result.Resultable;
@@ -36,6 +37,7 @@ import java.util.List;
 public class TableGameService {
     private static final int MAX_SUM = 21;
     private static final int ACE_VALUE_WHEN_MORE_THAN_MAX_SUM = 1;
+    private static final double BLACKJACK_MULTIPLY = 2.5;
     private TableGameDao tableGameDao;
     private CardPack cardPack;
     @Autowired
@@ -44,32 +46,39 @@ public class TableGameService {
     private AccountService accountService;
 
 
-    public TableGameService(TableGameDao tableGameDao) {
-        /******КОММЕНТИРУЙ ПОКА ДЛЯ СЕБЯ ЭТОТ БЛОК*******************/
+    //needs dependency injection!!!!!
+    private BetDao betDao;
+
+
+    public TableGameService(TableGameDao tableGameDao, BetDao betDao) {
+        this.tableGameDao = tableGameDao;
+        this.betDao = betDao;
+        cardPack = new CardPack();
+    }
+
+    public TableGameService(){
         String PERSISTENCE_UNIT = "com.spalah.courses.projects.blackjack";
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
         TableDao tableDao = new TableDaoImpl(entityManagerFactory);
         TableTypeDao tableTypeDao = new TableTypeDaoImpl(entityManagerFactory);
         BetDao betDao = new BetDaoImpl(entityManagerFactory);
         tableService = new TableService(tableDao, tableTypeDao, betDao);
-        /******************************************************/
+        TableGameDao tableGameDao = new TableGameDaoImpl(entityManagerFactory);
         this.tableGameDao = tableGameDao;
+        this.betDao = betDao;
         cardPack = new CardPack();
     }
 
     public static void main(String[] args) {
-        String PERSISTENCE_UNIT = "com.spalah.courses.projects.blackjack";
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
-        TableGameDao tableGameDao = new TableGameDaoImpl(entityManagerFactory);
-        TableGameService tableService = new TableGameService(tableGameDao);
+        TableGameService tableGameService = new TableGameService();
         try {
-            System.out.println(tableService.startFirstRound(1L));
+            System.out.println(tableGameService.startFirstRound(1L));
             Resultable result = null;
-            while (!((result = tableService.hit(1L)) instanceof GameOver)) {
+            while (!((result = tableGameService.hit(1L)) instanceof GameOver)) {
                 System.out.println(result.printResult());
             }
             System.out.println(result.printResult());
-            //System.out.println(tableService.hit(1L));
+            //System.out.println(tableGameService.hit(1L));
         } catch (BlackJackException e) {
             e.printStackTrace();
         }
@@ -144,7 +153,7 @@ public class TableGameService {
     /*
       * Returns the next card for this holder at this table. Return null if player has too many cards
      */
-    public Resultable hit(long tableId) throws AllCardsWereUsedException {
+    public Resultable hit(long tableId) throws AllCardsWereUsedException, AccountException {
         List<Card> usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
 
         Card newCard = cardPack.nextCard(usedCards);
@@ -158,6 +167,10 @@ public class TableGameService {
         if (playerSum < MAX_SUM) {
             return newCard;
         } else if (playerSum == MAX_SUM) {
+            //add win to balance
+            String thisTablePlayerLogin = tableService.getTable(tableId).getPlayer().getLogin();
+            Bet bet  = betDao.getBet(tableId);
+            accountService.updateAccountBalance(thisTablePlayerLogin, bet.getBetSize() * BLACKJACK_MULTIPLY );
             return summarizeResults(Winner.PLAYER, usedCards, playerCards, playerSum);
         } else { //cardSum > MAX_SUM
             return summarizeResults(Winner.DIALER, usedCards, playerCards, playerSum);

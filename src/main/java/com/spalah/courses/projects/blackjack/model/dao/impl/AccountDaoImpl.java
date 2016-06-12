@@ -65,4 +65,15 @@ public class AccountDaoImpl implements AccountDao {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         return entityManager.createQuery(GET_ALL_ACCOUNTS, Account.class).getResultList();
     }
+
+    @Override
+    public void setBalance(String login, double updateBalance) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+
+        entityManager.createQuery("Update Account SET balance =:updateBalance where login =:login")
+                .setParameter("updateBalance", updateBalance).setParameter("login", login).executeUpdate();
+
+        entityManager.getTransaction().commit();
+    }
 }

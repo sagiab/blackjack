@@ -8,4 +8,5 @@ import com.spalah.courses.projects.blackjack.model.domain.table.Table;
  */
 public interface BetDao {
     Bet addBet(Table table, int betSize);
+    Bet getBet(long tableId);
 }
