@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `black_jack` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `black_jack`;
 -- MySQL dump 10.13  Distrib 5.7.9, for Win32 (AMD64)
 --
 -- Host: 127.0.0.1    Database: black_jack
