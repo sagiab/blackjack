@@ -1,6 +1,4 @@
-package com.spalah.courses.projects.blackjack.model.domain.operation_result.cards;
-
-import com.spalah.courses.projects.blackjack.model.domain.operation_result.Resultable;
+package com.spalah.courses.projects.blackjack.model.domain.cards;
 
 import java.util.Objects;
 
@@ -8,7 +6,7 @@ import java.util.Objects;
  * @author Denis Loshkarev on 03.06.2016.
  * @author Dima Zasuha on 05.06.2016
  */
-public class Card implements Resultable {
+public class Card {
     private CardColor cardColor;
     private CardType cardType;
     private Holder whose; // show who own this card: player, dialer or none
@@ -60,10 +58,5 @@ public class Card implements Resultable {
 
     public CardType getCardType() {
         return cardType;
-    }
-
-    @Override
-    public String printResult() {
-        return getWhose() + " got card: " + toString();
     }
 }

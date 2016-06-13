@@ -5,7 +5,7 @@ import com.spalah.courses.projects.blackjack.model.domain.response.TableCreateRe
 import com.spalah.courses.projects.blackjack.model.domain.table.FormCreateTable;
 import com.spalah.courses.projects.blackjack.model.domain.table.Table;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableType;
-import com.spalah.courses.projects.blackjack.model.service.TableService;
+import com.spalah.courses.projects.blackjack.service.TableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;

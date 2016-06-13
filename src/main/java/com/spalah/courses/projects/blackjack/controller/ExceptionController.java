@@ -1,8 +1,13 @@
 package com.spalah.courses.projects.blackjack.controller;
 
 import com.spalah.courses.projects.blackjack.exception.AccountException;
+import com.spalah.courses.projects.blackjack.exception.AllCardsWereUsedException;
+import com.spalah.courses.projects.blackjack.exception.GameOverException;
 import com.spalah.courses.projects.blackjack.exception.TableException;
+import com.spalah.courses.projects.blackjack.model.domain.gameover.GameOver;
 import com.spalah.courses.projects.blackjack.model.domain.status.StatusMessage;
+import com.spalah.courses.projects.blackjack.service.TableGameService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,19 +19,27 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @ControllerAdvice
 public class ExceptionController {
+    @Autowired
+    private TableGameService tableGameService;
 
     @ExceptionHandler(AccountException.class)
     @ResponseBody
     public StatusMessage accountException(AccountException e) {
-        StatusMessage statusMessage = new StatusMessage().error(e);
-        return statusMessage;
+        return new StatusMessage().error(e);
     }
 
     @ExceptionHandler(TableException.class)
     @ResponseBody
-    public StatusMessage accountException(TableException e) {
-        StatusMessage statusMessage = new StatusMessage().error(e);
-        return statusMessage;
+    public StatusMessage tableException(TableException e) {
+        return new StatusMessage().error(e);
+    }
+
+    @ExceptionHandler(GameOverException.class)
+    @ResponseBody
+    public GameOver gameOverException(GameOverException e)
+            throws AllCardsWereUsedException, TableException, AccountException {
+        GameOver gameOver = tableGameService.stand(e.getLogin(), e.getTableId());
+        return gameOver;
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

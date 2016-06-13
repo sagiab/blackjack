@@ -1,4 +1,4 @@
-package com.spalah.courses.projects.blackjack.model.service;
+package com.spalah.courses.projects.blackjack.service;
 
 import com.spalah.courses.projects.blackjack.exception.AccountException;
 import com.spalah.courses.projects.blackjack.model.dao.AccountDao;

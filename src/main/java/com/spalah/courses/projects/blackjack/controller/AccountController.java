@@ -6,7 +6,7 @@ import com.spalah.courses.projects.blackjack.model.domain.account.FormCreateAcco
 import com.spalah.courses.projects.blackjack.model.domain.account.FormLoginAccount;
 import com.spalah.courses.projects.blackjack.model.domain.response.AccountInfoResponse;
 import com.spalah.courses.projects.blackjack.model.domain.status.StatusMessage;
-import com.spalah.courses.projects.blackjack.model.service.AccountService;
+import com.spalah.courses.projects.blackjack.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;

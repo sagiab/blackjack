@@ -1,9 +1,12 @@
-package com.spalah.courses.projects.blackjack.model.domain.operation_result.cards;
+package com.spalah.courses.projects.blackjack.model.domain.cards;
 
 
 import com.spalah.courses.projects.blackjack.exception.AllCardsWereUsedException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Denis Loshkarev on 03.06.2016.
@@ -18,21 +21,6 @@ public class CardPack {
         initPack();
     }
 
-    public static void main(String[] args) {
-        CardPack cardPack = new CardPack();
-        Set<Card> usedCards = new HashSet<>();
-        for (int i = 0; i < 49; i++) {
-            try {
-                Card nextCard = cardPack.nextCard(usedCards);
-                System.out.println(nextCard);
-                usedCards.add(nextCard);
-            } catch (AllCardsWereUsedException e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.println(usedCards.size());
-    }
-
     private void initPack() {
         CardType[] cardTypes = CardType.values();
         CardColor[] cardColors = CardColor.values();
@@ -41,6 +29,10 @@ public class CardPack {
                 cards.add(new Card(cardColor, cardType));
             }
         }
+        shuffle();
+    }
+
+    private void shuffle() {
         Collections.shuffle(cards); // должны шафлить или можно предугадать
     }
 
@@ -49,6 +41,7 @@ public class CardPack {
     * @param usedCards cards that are already in the game
     */
     public Card nextCard(Collection usedCards) throws AllCardsWereUsedException {
+        shuffle();
         for (Card card : cards) {
             if (!usedCards.contains(card)) {
                 return card;

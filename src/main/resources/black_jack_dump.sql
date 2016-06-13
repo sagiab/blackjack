@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `black_jack` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `black_jack`;
--- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.9, for Win32 (AMD64)
 --
 -- Host: 127.0.0.1    Database: black_jack
 -- ------------------------------------------------------
--- Server version	5.7.11-log
+-- Server version	5.6.21
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,10 +27,10 @@ CREATE TABLE `account` (
   `login` varchar(25) NOT NULL,
   `nickname` varchar(15) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `balance` double DEFAULT NULL,
+  `balance` double NOT NULL,
   PRIMARY KEY (`player_id`),
   UNIQUE KEY `login_UNIQUE` (`login`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +39,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'Den@Den','Den','$2a$10$fqXsfEVDctAI/39sk4BUFu3BUt9Lz1/dEg4ODBkPYbDrIyuGLKb5m',10000),(2,'Ned@Ned','Ned','$2a$10$fqXsfEVDctAI/39sk4BUFu3BUt9Lz1/dEg4ODBkPYbDrIyuGLKb5m',10000);
+INSERT INTO `account` VALUES (1,'Den','Den','$2a$10$fqXsfEVDctAI/39sk4BUFu3BUt9Lz1/dEg4ODBkPYbDrIyuGLKb5m',10000),(2,'Ned','Ned','$2a$10$fqXsfEVDctAI/39sk4BUFu3BUt9Lz1/dEg4ODBkPYbDrIyuGLKb5m',10000),(3,'Login','Nickname','$2a$10$BTY4rBvUhnjAfCWv3KE9luMpbboGu4/cOo1HP7dZ4j2dmhi7Mco3u',7750);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -59,7 +57,7 @@ CREATE TABLE `bet_player_communication` (
   PRIMARY KEY (`bet_id`),
   KEY `fk_otstavkiigroka_stoligrok_com_idx` (`table_id`),
   CONSTRAINT `fk_otstavkiigroka_stoligrok_com` FOREIGN KEY (`table_id`) REFERENCES `table_player_communication` (`table_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +66,6 @@ CREATE TABLE `bet_player_communication` (
 
 LOCK TABLES `bet_player_communication` WRITE;
 /*!40000 ALTER TABLE `bet_player_communication` DISABLE KEYS */;
-INSERT INTO `bet_player_communication` VALUES (5,1,500),(6,1,500);
 /*!40000 ALTER TABLE `bet_player_communication` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,7 +84,7 @@ CREATE TABLE `table_game` (
   PRIMARY KEY (`step_id`),
   KEY `fk_stavka_stoligra_stavkaigrok_com_idx` (`bet_id`),
   CONSTRAINT `fk_stavka_stoligra_stavkaigrok_com` FOREIGN KEY (`bet_id`) REFERENCES `bet_player_communication` (`bet_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +93,6 @@ CREATE TABLE `table_game` (
 
 LOCK TABLES `table_game` WRITE;
 /*!40000 ALTER TABLE `table_game` DISABLE KEYS */;
-INSERT INTO `table_game` VALUES (124,5,'SIX.DIAMOND','PLAYER'),(125,5,'NINE.CLUB','DIALER'),(126,5,'TEN.SPADE','PLAYER'),(127,5,'SIX.CLUB','DIALER'),(128,5,'THREE.CLUB','PLAYER'),(129,5,'KING.SPADE','PLAYER'),(130,5,'ACE.HEART','PLAYER'),(131,5,'SIX.CLUB','DIALER'),(132,5,'EIGHT.CLUB','PLAYER'),(133,5,'KING.DIAMOND','DIALER'),(134,5,'FOUR.SPADE','PLAYER');
 /*!40000 ALTER TABLE `table_game` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,7 +112,7 @@ CREATE TABLE `table_player_communication` (
   KEY `fk_tipstola_stoligrok_com_idx` (`table_type_id`),
   CONSTRAINT `fk_player_table_player_com` FOREIGN KEY (`player_id`) REFERENCES `account` (`player_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_tipstola_stoligrok_com` FOREIGN KEY (`table_type_id`) REFERENCES `table_type` (`table_type_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -125,7 +121,7 @@ CREATE TABLE `table_player_communication` (
 
 LOCK TABLES `table_player_communication` WRITE;
 /*!40000 ALTER TABLE `table_player_communication` DISABLE KEYS */;
-INSERT INTO `table_player_communication` VALUES (1,2,1);
+INSERT INTO `table_player_communication` VALUES (1,2,3);
 /*!40000 ALTER TABLE `table_player_communication` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,4 +159,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-06-12 14:51:34
+-- Dump completed on 2016-06-13 17:42:30

@@ -1,15 +1,15 @@
-package com.spalah.courses.projects.blackjack.model.service;
+package com.spalah.courses.projects.blackjack.service;
 
 import com.spalah.courses.projects.blackjack.exception.AccountException;
-import com.spalah.courses.projects.blackjack.model.dao.BetDao;
+import com.spalah.courses.projects.blackjack.exception.TableException;
 import com.spalah.courses.projects.blackjack.model.dao.TableDao;
 import com.spalah.courses.projects.blackjack.model.dao.TableTypeDao;
 import com.spalah.courses.projects.blackjack.model.domain.account.Account;
 import com.spalah.courses.projects.blackjack.model.domain.bet.Bet;
-import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.Card;
-import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.CardColor;
-import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.CardType;
-import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.Holder;
+import com.spalah.courses.projects.blackjack.model.domain.cards.Card;
+import com.spalah.courses.projects.blackjack.model.domain.cards.CardColor;
+import com.spalah.courses.projects.blackjack.model.domain.cards.CardType;
+import com.spalah.courses.projects.blackjack.model.domain.cards.Holder;
 import com.spalah.courses.projects.blackjack.model.domain.table.Table;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableGame;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableType;
@@ -25,11 +25,11 @@ public class TableService {
     @Autowired
     private AccountService accountService;
     @Autowired
+    private TableGameService tableGameService;
+    @Autowired
     private TableDao tableDao;
     @Autowired
     private TableTypeDao tableTypeDao;
-    @Autowired
-    private BetDao betDao;
 
     public TableService() {
     }
@@ -48,10 +48,13 @@ public class TableService {
         return tableDao.createTable(tableType, account);
     }
 
-    public void spreadCash(long tableId, double multiply) throws AccountException {
-        Bet bet = betDao.getBet(tableId);
+    public double spreadCash(long tableId, double multiply) throws AccountException, TableException {
+        Bet bet = tableGameService.getBet(tableId);
         Account account = getTable(tableId).getPlayer();
-        accountService.updateAccountBalance(account, bet.getBetSize() * multiply);
+        double profit = bet.getBetSize() * multiply;
+        accountService.updateAccountBalance(account, profit);
+        tableGameService.deleteBet(tableId);
+        return profit;
     }
 
     public List<Card> getUsedCards(long tableId) {

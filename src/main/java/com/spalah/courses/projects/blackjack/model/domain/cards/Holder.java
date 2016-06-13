@@ -1,4 +1,4 @@
-package com.spalah.courses.projects.blackjack.model.domain.operation_result.cards;
+package com.spalah.courses.projects.blackjack.model.domain.cards;
 
 /**
  * Created by Dima on 09.06.2016.

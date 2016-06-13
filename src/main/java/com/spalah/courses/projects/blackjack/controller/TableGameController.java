@@ -1,13 +1,13 @@
 package com.spalah.courses.projects.blackjack.controller;
 
-import com.spalah.courses.projects.blackjack.exception.AccountException;
-import com.spalah.courses.projects.blackjack.exception.AllCardsWereUsedException;
-import com.spalah.courses.projects.blackjack.exception.BetOutOfTypeRange;
-import com.spalah.courses.projects.blackjack.exception.TableException;
+import com.spalah.courses.projects.blackjack.exception.*;
 import com.spalah.courses.projects.blackjack.model.domain.bet.Bet;
 import com.spalah.courses.projects.blackjack.model.domain.commands.Command;
+import com.spalah.courses.projects.blackjack.model.domain.gameover.GameOver;
+import com.spalah.courses.projects.blackjack.model.domain.response.BetCreateResponse;
+import com.spalah.courses.projects.blackjack.model.domain.response.TableGameStep;
 import com.spalah.courses.projects.blackjack.model.domain.status.StatusMessage;
-import com.spalah.courses.projects.blackjack.model.service.TableGameService;
+import com.spalah.courses.projects.blackjack.service.TableGameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -45,13 +45,16 @@ public class TableGameController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
-    public StatusMessage createBet(
+    public BetCreateResponse createBet(
             @PathVariable String login,
             @PathVariable int betSize,
             @PathVariable Long tableId
-    ) throws BetOutOfTypeRange, AllCardsWereUsedException, AccountException, TableException {
+    ) throws BetException, AllCardsWereUsedException, AccountException, TableException, GameOverException {
         tableGameService.createBet(login, betSize, tableId);
-        return new StatusMessage().well("Bet on table #" + tableId + " created, size = " + betSize);
+        TableGameStep step = tableGameService.startFirstRound(login, tableId);
+        StatusMessage status =
+                new StatusMessage().well("Bet on table #" + tableId + " created, size = " + betSize);
+        return new BetCreateResponse(status, step);
     }
 
     @RequestMapping(
@@ -66,5 +69,33 @@ public class TableGameController {
     ) throws AccountException, TableException {
         return tableGameService.deleteBet(login, tableId);
 //        return new StatusMessage().well("Bet on table #" + tableId + " deleted");
+    }
+
+    @RequestMapping(
+            value = "/account/{login}/table/{tableId}/hit",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseBody
+    public TableGameStep hit(
+            @PathVariable String login,
+            @PathVariable Long tableId
+    ) throws BetException, AllCardsWereUsedException, AccountException, TableException, GameOverException {
+        TableGameStep step = tableGameService.hit(login, tableId);
+        return step;
+    }
+
+    @RequestMapping(
+            value = "/account/{login}/table/{tableId}/stand",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ResponseBody
+    public GameOver stand(
+            @PathVariable String login,
+            @PathVariable Long tableId
+    ) throws BetException, AllCardsWereUsedException, AccountException, TableException, GameOverException {
+        GameOver gameOver = tableGameService.stand(login, tableId);
+        return gameOver;
     }
 }

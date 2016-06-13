@@ -1,4 +1,4 @@
-package com.spalah.courses.projects.blackjack.model.domain.operation_result.game_ower;
+package com.spalah.courses.projects.blackjack.model.domain.gameover;
 
 /**
  * Created by Dima on 12.06.2016.

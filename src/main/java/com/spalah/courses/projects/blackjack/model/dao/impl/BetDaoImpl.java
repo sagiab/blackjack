@@ -10,7 +10,7 @@ import javax.persistence.EntityManagerFactory;
  * Created by Dima on 12.06.2016.
  */
 public class BetDaoImpl implements BetDao {
-    private static final String SQL_GET_BET_BY_TABLE_ID = "FROM Bet where table_id = :tableId";
+    private static final String SQL_GET_BET_BY_TABLE_ID = "FROM Bet where tableId = :tableId";
     private EntityManagerFactory entityManagerFactory;
 
     public BetDaoImpl(EntityManagerFactory entityManagerFactory) {
@@ -33,9 +33,8 @@ public class BetDaoImpl implements BetDao {
     @Override
     public Bet getBet(long tableId) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        Bet bet = entityManager.createQuery(SQL_GET_BET_BY_TABLE_ID, Bet.class)
+        return entityManager.createQuery(SQL_GET_BET_BY_TABLE_ID, Bet.class)
                 .setParameter("tableId", tableId).getSingleResult();
-        return bet;
     }
 
     @Override

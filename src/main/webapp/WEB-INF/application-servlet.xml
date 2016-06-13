@@ -13,9 +13,9 @@
     <context:component-scan base-package="com.spalah.courses.projects.blackjack"/>
 
 
-    <bean id="accountService" class="com.spalah.courses.projects.blackjack.model.service.AccountService" />
-    <bean id="tableService" class="com.spalah.courses.projects.blackjack.model.service.TableService" />
-    <bean id="tableGameService" class="com.spalah.courses.projects.blackjack.model.service.TableGameService" />
+    <bean id="accountService" class="com.spalah.courses.projects.blackjack.service.AccountService" />
+    <bean id="tableService" class="com.spalah.courses.projects.blackjack.service.TableService" />
+    <bean id="tableGameService" class="com.spalah.courses.projects.blackjack.service.TableGameService" />
 
 
     <bean id="accountDao" class="com.spalah.courses.projects.blackjack.model.dao.impl.AccountDaoImpl">
@@ -37,7 +37,7 @@
 
     <bean id="entityManagerFactory"
           factory-method="getEntityManagerFactory"
-          class="com.spalah.courses.projects.blackjack.Main">
+          class="com.spalah.courses.projects.blackjack.EntityManagerFactoryFabric">
         <constructor-arg value="com.spalah.courses.projects.blackjack"/>
     </bean>
 
