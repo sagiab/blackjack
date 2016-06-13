@@ -9,7 +9,7 @@ import java.util.List;
  * Created by Dima on 12.06.2016.
  */
 public class GameOver implements Resultable {
-    private Winner winner;
+    private GameOutcome gameOutcome;
 
     private List<Card> dealerCards;
     private List<Card> playerCards;
@@ -17,18 +17,22 @@ public class GameOver implements Resultable {
     private int playerSum;
     private int dealerSum;
 
-    public GameOver(Winner winner, List<Card> dealerCards, int dealerSum, List<Card> playerCards, int playerSum) {
-        this.winner = winner;
+    public GameOver(GameOutcome gameOutcome, List<Card> dealerCards, int dealerSum, List<Card> playerCards, int playerSum) {
+        this.gameOutcome = gameOutcome;
         this.dealerCards = dealerCards;
         this.playerCards = playerCards;
         this.playerSum = playerSum;
         this.dealerSum = dealerSum;
     }
 
+    public GameOutcome getGameOutcome() {
+        return gameOutcome;
+    }
+
     @Override
     public String toString() {
-        return "GameOver{" +
-                "winner=" + winner +
+        return "Resultable{" +
+                "gameOutcome=" + gameOutcome +
                 ", dealerCards=" + dealerCards +
                 ", playerCards=" + playerCards +
                 ", playerSum=" + playerSum +

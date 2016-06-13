@@ -1,9 +1,11 @@
 package com.spalah.courses.projects.blackjack.model.service;
 
 import com.spalah.courses.projects.blackjack.exception.AccountException;
+import com.spalah.courses.projects.blackjack.model.dao.BetDao;
 import com.spalah.courses.projects.blackjack.model.dao.TableDao;
 import com.spalah.courses.projects.blackjack.model.dao.TableTypeDao;
 import com.spalah.courses.projects.blackjack.model.domain.account.Account;
+import com.spalah.courses.projects.blackjack.model.domain.bet.Bet;
 import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.Card;
 import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.CardColor;
 import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.CardType;
@@ -26,6 +28,8 @@ public class TableService {
     private TableDao tableDao;
     @Autowired
     private TableTypeDao tableTypeDao;
+    @Autowired
+    private BetDao betDao;
 
     public TableService() {
     }
@@ -42,6 +46,12 @@ public class TableService {
         TableType tableType = tableTypeDao.getTableTypeById(tableTypeId);
         Account account = accountService.getAccount(login);
         return tableDao.createTable(tableType, account);
+    }
+
+    public void spreadCash(long tableId, double multiply) throws AccountException {
+        Bet bet = betDao.getBet(tableId);
+        Account account = getTable(tableId).getPlayer();
+        accountService.updateAccountBalance(account, bet.getBetSize() * multiply);
     }
 
     public List<Card> getUsedCards(long tableId) {

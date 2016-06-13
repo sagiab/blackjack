@@ -3,6 +3,6 @@ package com.spalah.courses.projects.blackjack.model.domain.operation_result.game
 /**
  * Created by Dima on 12.06.2016.
  */
-public enum Winner {
-    PLAYER, DIALER
+public enum GameOutcome {
+    PLAYER_WON, DIALER_WON, DRAW
 }

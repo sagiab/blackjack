@@ -15,8 +15,8 @@ import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards
 import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.CardPack;
 import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.CardType;
 import com.spalah.courses.projects.blackjack.model.domain.operation_result.cards.Holder;
+import com.spalah.courses.projects.blackjack.model.domain.operation_result.game_ower.GameOutcome;
 import com.spalah.courses.projects.blackjack.model.domain.operation_result.game_ower.GameOver;
-import com.spalah.courses.projects.blackjack.model.domain.operation_result.game_ower.Winner;
 import com.spalah.courses.projects.blackjack.model.domain.table.Table;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableGame;
 import com.spalah.courses.projects.blackjack.model.domain.table.TableType;
@@ -33,6 +33,8 @@ public class TableGameService {
     private static final int MAX_SUM = 21;
     private static final int ACE_VALUE_WHEN_MORE_THAN_MAX_SUM = 1;
     private static final double BLACKJACK_MULTIPLY = 2.5;
+    private static final int DOUBLE_MULTIPLY = 2;
+    private static final int DRAW_MULTIPLY = 1;
 
     @Autowired
     private TableService tableService;
@@ -85,28 +87,23 @@ public class TableGameService {
         List<Card> firstCards = new ArrayList<>();
         int playerSum = 0;
 
-//        List<Card> usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
         Card newPlayerCard = cardPack.nextCard(firstCards);
         playerSum += newPlayerCard.getCardType().getValue();
         newPlayerCard.setWhose(Holder.PLAYER);
         addCard(newPlayerCard, tableId);//добавляем эту карту в базу
         firstCards.add(newPlayerCard);
 
-//        usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
         Card newDialerCard = cardPack.nextCard(firstCards);
         newDialerCard.setWhose(Holder.DIALER);
         addCard(newDialerCard, tableId);//добавляем эту карту в базу
         firstCards.add(newDialerCard);
 
-
-//        usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
         newPlayerCard = cardPack.nextCard(firstCards);
         playerSum += newPlayerCard.getCardType().getValue();
         newPlayerCard.setWhose(Holder.PLAYER);
         addCard(newPlayerCard, tableId);//добавляем эту карту в базу
         firstCards.add(newPlayerCard);
 
-//        usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
         newDialerCard = cardPack.nextCard(firstCards);
         newDialerCard.setWhose(Holder.DIALER);
         addCard(newDialerCard, tableId);//добавляем эту карту в базу
@@ -174,31 +171,78 @@ public class TableGameService {
     public Resultable hit(long tableId) throws AllCardsWereUsedException, AccountException {
         List<Card> usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
 
-        Card newCard = cardPack.nextCard(usedCards);
-        newCard.setWhose(Holder.PLAYER);
-        addCard(newCard, tableId);//добавляем эту карту в базу
+        Card newPlayerCard = cardPack.nextCard(usedCards);
+        newPlayerCard.setWhose(Holder.PLAYER);
+        addCard(newPlayerCard, tableId);//добавляем эту карту в базу
 
         List<Card> playerCards = getHolderCards(Holder.PLAYER, usedCards);
-        playerCards.add(newCard);
+        playerCards.add(newPlayerCard);
         int playerSum = calculateCardsSum(playerCards);
         System.out.println(Holder.PLAYER + "'s sum = " + playerSum);
         if (playerSum < MAX_SUM) {
-            return newCard;
+            return newPlayerCard;
         } else if (playerSum == MAX_SUM) {
             //add win to balance
-            Bet bet = betDao.getBet(tableId);
-            Account account = tableService.getTable(tableId).getPlayer();
-            accountService.updateAccountBalance(account, bet.getBetSize() * BLACKJACK_MULTIPLY);
-            return summarizeResults(Winner.PLAYER, usedCards, playerCards, playerSum);
+            tableService.spreadCash(tableId, BLACKJACK_MULTIPLY); // return bet * 2
+            return summarizeResults(GameOutcome.PLAYER_WON, usedCards, playerCards, playerSum);
         } else { //cardSum > MAX_SUM
-            return summarizeResults(Winner.DIALER, usedCards, playerCards, playerSum);
+            return summarizeResults(GameOutcome.DIALER_WON, usedCards, playerCards, playerSum);
         }
     }
 
-    private GameOver summarizeResults(Winner winner, List<Card> usedCards, List<Card> playerCards, int playerSum) {
+    public GameOver stand(long tableId) throws AllCardsWereUsedException, AccountException {
+        List<Card> usedCards = tableService.getUsedCards(tableId); //берем все использованные карты из базы
+        List<Card> dealerCards = getHolderCards(Holder.DIALER, usedCards);
+
+        int dealerSum;
+        while ((dealerSum = calculateCardsSum(dealerCards)) < 17){
+            Card newDealerCard = cardPack.nextCard(usedCards);
+            newDealerCard.setWhose(Holder.DIALER);
+            addCard(newDealerCard, tableId);//добавляем эту карту в базу
+            dealerCards.add(newDealerCard);
+        }
+
+        GameOver gameOver = compareDialerAndPlayerResults(usedCards, dealerCards, dealerSum);
+        GameOutcome gameOutcome = gameOver.getGameOutcome();
+        if (gameOutcome.equals(GameOutcome.PLAYER_WON)){
+            tableService.spreadCash(tableId, DOUBLE_MULTIPLY); // return bet * 2
+        }
+        else if (gameOutcome.equals(GameOutcome.DRAW)){
+            tableService.spreadCash(tableId, DRAW_MULTIPLY); // just return bet
+        }
+        //if GameOutcome.DIALER_WON - balance stays the same
+
+        return gameOver;
+    }
+
+    private GameOver compareDialerAndPlayerResults(List<Card> usedCards, List<Card> dealerCards, int dealerSum){
+        List<Card> playerCards = getHolderCards(Holder.PLAYER, usedCards);
+        int playerSum = calculateCardsSum(playerCards);
+
+        GameOutcome gameOutcome = null;
+        if (dealerSum > 21) {
+            gameOutcome = GameOutcome.PLAYER_WON;
+        }
+        else { // compareSums
+            if (playerSum < dealerSum ) {
+                gameOutcome = GameOutcome.DIALER_WON;
+            }
+            else if (playerSum > dealerSum) {
+                gameOutcome = GameOutcome.PLAYER_WON;
+            }
+            else {
+                gameOutcome = GameOutcome.DRAW;
+            }
+        }
+
+        return new GameOver(gameOutcome, dealerCards, dealerSum, playerCards, playerSum);
+    }
+
+
+    private com.spalah.courses.projects.blackjack.model.domain.operation_result.game_ower.GameOver summarizeResults(GameOutcome gameOutcome, List<Card> usedCards, List<Card> playerCards, int playerSum) {
         List<Card> dealerCards = getHolderCards(Holder.DIALER, usedCards);
         int dealerSum = calculateCardsSum(dealerCards);
-        return new GameOver(winner, dealerCards, dealerSum, playerCards, playerSum);
+        return new com.spalah.courses.projects.blackjack.model.domain.operation_result.game_ower.GameOver(gameOutcome, dealerCards, dealerSum, playerCards, playerSum);
     }
 
     private List<Card> getHolderCards(Holder holder, List<Card> usedCards) {
