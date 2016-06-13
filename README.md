@@ -2,11 +2,6 @@
 
 ### BlackJack API:
 
-#### Objects:
-- ##### User:
-
-- ##### Table:
-
 #### Urls:
 - ##### Account:
 
@@ -128,37 +123,33 @@
 
         ```json
     
-            URL: /account/{login}/table/{tableID}
-            TYPE: POST
-            BODY: Command in JSON format. See command types
-            EFFECT: Sends command to server
-            RESPONSE:  JSON
+            URL: /account/{login}/table/{tableID}/bet/{betSize}
+            TYPE: GET
+            BODY: NONE
+            EFFECT: Sends bet command to server with bet size from url
+            RESPONSE:  JSON with result
                 
            
         ```
-    
-        - Command types:
-    
-            ```json 
-                HIT:
-                    {
-                        "command": "HIT"
-                    }
-                
-                BET:
-                    {
-                        "command": "BET",
-                        "amount": 25
-                    }
-                
-                STAND:
-                    {
-                        "command": "STAND"
-                    }
-                
-                EXIT:
-                    {
-                        "command": "EXIT"
-                    }
-            ```
 
+        ```json
+
+            URL: /account/{login}/table/{tableID}/hit
+            TYPE: GET
+            BODY: NONE
+            EFFECT: Sends hit command to server
+            RESPONSE:  JSON with dealed player and one of dealer cards
+
+
+        ```
+
+        ```json
+
+            URL: /account/{login}/table/{tableID}/stand
+            TYPE: GET
+            BODY: NONE
+            EFFECT: Sends stand command to server
+            RESPONSE:  JSON with result of this game.
+
+
+        ```
