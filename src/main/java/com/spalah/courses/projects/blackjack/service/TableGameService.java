@@ -73,7 +73,6 @@ public class TableGameService {
     private void checkTableIdByAccount(Table table, String login) throws AccountException, TableException {
         Account account = accountService.getAccount(login);
         if (!table.getPlayer().equals(account)) {
-            System.out.println(account + " = " + table.getPlayer());
             throw new TableException("Sorry, but this table created by another player");
         }
     }

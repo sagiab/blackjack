@@ -37,6 +37,7 @@ public class TableDaoImpl implements TableDao {
 
         entityManager.persist(table);
         entityManager.getTransaction().commit();
+        entityManager.close();
 
         return table;
     }
@@ -44,9 +45,11 @@ public class TableDaoImpl implements TableDao {
     @Override
     public Table getTable(long tableId) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        return entityManager.createQuery(SQL_GET_TABLE_BY_TABLE_ID, Table.class)
+        Table result = entityManager.createQuery(SQL_GET_TABLE_BY_TABLE_ID, Table.class)
                 .setParameter("id", tableId)
                 .getSingleResult();
+        entityManager.close();
+        return result;
     }
 
     /*
@@ -57,8 +60,10 @@ public class TableDaoImpl implements TableDao {
     @Override
     public List<TableGame> getSteps(long tableId) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        return entityManager.createQuery(SQL_GET_STEPS_BY_TABLE_ID, TableGame.class)
+        List<TableGame> resultList = entityManager.createQuery(SQL_GET_STEPS_BY_TABLE_ID, TableGame.class)
                 .setParameter("tableId", tableId)
                 .getResultList();
+        entityManager.close();
+        return resultList;
     }
 }

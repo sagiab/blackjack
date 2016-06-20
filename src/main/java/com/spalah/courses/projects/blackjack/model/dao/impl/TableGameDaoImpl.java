@@ -28,5 +28,6 @@ public class TableGameDaoImpl implements TableGameDao {
         entityManager.getTransaction().begin();
         entityManager.persist(tableGame);
         entityManager.getTransaction().commit();
+        entityManager.close();
     }
 }

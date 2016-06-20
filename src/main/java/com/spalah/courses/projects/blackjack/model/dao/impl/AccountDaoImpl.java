@@ -31,6 +31,7 @@ public class AccountDaoImpl implements AccountDao {
         entityManager.getTransaction().begin();
         entityManager.persist(account);
         entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @Override
@@ -52,7 +53,9 @@ public class AccountDaoImpl implements AccountDao {
         if (login != null) {
             q.setParameter("login", login);
         }
-        return q.getSingleResult();
+        Account result = q.getSingleResult();
+        entityManager.close();
+        return result;
     }
 
     @Override
@@ -63,12 +66,15 @@ public class AccountDaoImpl implements AccountDao {
                 .setParameter("login", login)
                 .executeUpdate();
         entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     @Override
     public List<Account> getAll() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        return entityManager.createQuery(GET_ALL_ACCOUNTS, Account.class).getResultList();
+        List<Account> list = entityManager.createQuery(GET_ALL_ACCOUNTS, Account.class).getResultList();
+        entityManager.close();
+        return list;
     }
 
     @Override
@@ -80,5 +86,6 @@ public class AccountDaoImpl implements AccountDao {
                 .setParameter("updateBalance", updateBalance).setParameter("login", login).executeUpdate();
 
         entityManager.getTransaction().commit();
+        entityManager.close();
     }
 }

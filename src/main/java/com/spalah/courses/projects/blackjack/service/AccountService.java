@@ -20,7 +20,7 @@ public class AccountService {
     public AccountService() {
     }
 
-    public Account getAccount(String login) throws AccountException {
+    Account getAccount(String login) throws AccountException {
         Account account;
         try {
             account = accountDao.getAccount(login);
@@ -31,12 +31,7 @@ public class AccountService {
     }
 
     public Account getAccount(String login, String password) throws AccountException {
-        Account account;
-        try {
-            account = accountDao.getAccount(login);
-        } catch (NoResultException e) {
-            throw new AccountException("Login incorrect");
-        }
+        Account account = getAccount(login);
         if (BCrypt.checkpw(password, account.getPassword())) return account;
         else throw new AccountException("Password incorrect");
     }
@@ -63,7 +58,7 @@ public class AccountService {
     /*
     @return >0 if balance was succesfully updated or -1 if not enough balance on account
      */
-    public double updateAccountBalance(Account account, double updateSum) throws AccountException {
+    double updateAccountBalance(Account account, double updateSum) throws AccountException {
         Double updatedBalance;
         if ((updateSum < 0 && account.getBalance() + updateSum >= 0) || updateSum >= 0) {
             updatedBalance = account.getBalance() + updateSum;

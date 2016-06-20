@@ -32,7 +32,7 @@ public class AccountController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
-    public StatusMessage createAccount(@Valid @RequestBody FormCreateAccount formAccount)
+    public StatusMessage create(@Valid @RequestBody FormCreateAccount formAccount)
             throws AccountException {
         Account account = new Account();
         account.setLogin(formAccount.getLogin());
@@ -44,10 +44,25 @@ public class AccountController {
 
     @RequestMapping(
             value = "/account/login",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             method = RequestMethod.POST
     )
     @ResponseBody
-    public AccountInfoResponse createAccount(@Valid @RequestBody FormLoginAccount loginAccount)
+    public AccountInfoResponse login(@Valid @RequestBody FormLoginAccount loginAccount)
+            throws AccountException {
+        String login = loginAccount.getLogin();
+        String password = loginAccount.getPassword();
+        Account account = accountService.getAccount(login, password);
+        return new AccountInfoResponse(account);
+    }
+
+    @RequestMapping(
+            value = "/account/info",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            method = RequestMethod.POST
+    )
+    @ResponseBody
+    public AccountInfoResponse getInfo(@Valid @RequestBody FormLoginAccount loginAccount)
             throws AccountException {
         String login = loginAccount.getLogin();
         String password = loginAccount.getPassword();
@@ -60,7 +75,8 @@ public class AccountController {
             method = RequestMethod.DELETE
     )
     @ResponseBody
-    public StatusMessage deleteMessage(@PathVariable String login, @PathVariable String password) throws AccountException {
+    public StatusMessage delete(@PathVariable String login, @PathVariable String password)
+            throws AccountException {
         accountService.deleteAccount(login, password);
         return new StatusMessage().well("Account " + login + " deleted");
     }

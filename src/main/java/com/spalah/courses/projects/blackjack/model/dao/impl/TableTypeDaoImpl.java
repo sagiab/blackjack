@@ -22,17 +22,21 @@ public class TableTypeDaoImpl implements TableTypeDao {
     @Override
     public List<TableType> getTableTypesVariants() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        return entityManager
+        List<TableType> resultList = entityManager
                 .createQuery(GET_ALL_TABLE_TYPES, TableType.class)
                 .getResultList();
+        entityManager.close();
+        return resultList;
     }
 
     @Override
     public TableType getTableTypeById(Long id) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        return entityManager
+        TableType result = entityManager
                 .createQuery(GET_TABLE_TYPE_BY_ID, TableType.class)
                 .setParameter("id", id)
                 .getSingleResult();
+        entityManager.close();
+        return result;
     }
 }
